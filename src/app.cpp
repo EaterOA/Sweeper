@@ -45,6 +45,7 @@ void appStart()
 
         // display window
         window.display();
+        window.clear();
     }
 }
 

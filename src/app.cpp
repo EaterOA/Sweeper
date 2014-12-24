@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "sweeper.hpp"
 
 sf::RenderWindow window;
 sf::Clock gameClock;
+Sweeper game;
 
 bool appInit()
 {
@@ -11,6 +13,9 @@ bool appInit()
     settings.antialiasingLevel = 8;
     window.create(sf::VideoMode(800, 600), "Sweeper", sf::Style::Close, settings);
     window.setFramerateLimit(30);
+
+    if (!game.init())
+        return false;
 
     return true;
 }
@@ -41,7 +46,7 @@ void appStart()
         sf::Vector2f cursor(sf::Mouse::getPosition(window));
 
         // do awesome stuff
-        elapsed = elapsed;
+        game.tick(events, elapsed, cursor);
 
         // display window
         window.display();

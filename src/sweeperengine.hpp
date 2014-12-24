@@ -6,8 +6,8 @@ class SweeperEngine
     public:
         SweeperEngine(int x, int y); //default minefield generation
         SweeperEngine(int x, int y, double p); //generate with prob p
-        const bool** getMinefield();
-        const int** getNumfield;
+        bool** getMinefield();
+        int** getNumfield();
         int getX();
         int getY();
 
@@ -16,6 +16,6 @@ class SweeperEngine
         int** numfield;
         int dimX;
         int dimY;
-}
+};
 
 #endif

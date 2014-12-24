@@ -1,4 +1,5 @@
 #include "sweeperengine.hpp"
+#include <cstdlib>
 #include <ctime>
 
 SweeperEngine::SweeperEngine(int x, int y)
@@ -59,12 +60,12 @@ SweeperEngine::SweeperEngine(int x, int y, double p)
     }
 }
 
-const bool** SweeperEngine::getMinefield()
+bool** SweeperEngine::getMinefield()
 {
     return minefield;
 }
 
-const int** SweeperEngine::getNumfield()
+int** SweeperEngine::getNumfield()
 {
     return numfield;
 }

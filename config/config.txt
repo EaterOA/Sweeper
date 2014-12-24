@@ -1,0 +1,2 @@
+board_width = 16
+board_height = 16

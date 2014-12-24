@@ -1,5 +1,5 @@
-#ifndef BATTLEMECHANICS_HPP
-#define BATTLEMECHANICS_HPP
+#ifndef SWEEPERMECHANICS_HPP
+#define SWEEPERMECHANICS_HPP
 
 #include <vector>
 #include <SFML/Graphics.hpp>

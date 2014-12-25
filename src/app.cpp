@@ -49,8 +49,8 @@ void appStart()
         game.tick(events, elapsed, cursor);
 
         // display window
+        game.draw(window);
         window.display();
-        window.clear();
     }
 }
 

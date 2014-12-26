@@ -28,6 +28,8 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
             std::cout << "HI!\n";
         }
     }
+
+    gAgent.updateState(mAgent.getBoard(), mAgent.getStatus(), mAgent.getElapsed());
 }
 
 void Sweeper::draw(sf::RenderWindow &w) const

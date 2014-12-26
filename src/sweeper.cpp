@@ -1,16 +1,12 @@
+#include "sweeper.hpp"
 #include "gameconfig.hpp"
 #include "util.hpp"
-#include "sweeper.hpp"
-#include "sweepermechanics.hpp"
-#include "sweepergraphics.hpp"
 #include <iostream>
 
 bool Sweeper::init()
 {
-    mAgent = new SweeperMechanics();
-    gAgent = new SweeperGraphics();
-    if (!mAgent->init()) return false;
-    if (!gAgent->init()) return false;
+    if (!mAgent.init()) return false;
+    if (!gAgent.init()) return false;
 
     return true;
 }
@@ -27,5 +23,5 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
 
 void Sweeper::draw(sf::RenderWindow &w) const
 {
-    w.draw(*gAgent);
+    w.draw(gAgent);
 }

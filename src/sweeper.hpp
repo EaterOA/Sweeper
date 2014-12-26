@@ -9,10 +9,8 @@ GameLayer
 #ifndef SWEEPER_HPP
 #define SWEEPER_HPP
 
-#include <SFML/Graphics.hpp>
-
-class SweeperMechanics;
-class SweeperGraphics;
+#include "sweepermechanics.hpp"
+#include "sweepergraphics.hpp"
 
 class Sweeper
 {
@@ -21,8 +19,8 @@ public:
     virtual void tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m);
     virtual void draw(sf::RenderWindow &w) const;
 private:
-    SweeperMechanics *mAgent;
-    SweeperGraphics *gAgent;
+    SweeperMechanics mAgent;
+    SweeperGraphics gAgent;
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "gameconfig.hpp"
 #include "sweeper.hpp"
 
 sf::RenderWindow window;
@@ -14,8 +15,8 @@ bool appInit()
     window.create(sf::VideoMode(800, 600), "Sweeper", sf::Style::Close, settings);
     window.setFramerateLimit(30);
 
-    if (!game.init())
-        return false;
+    if (!config.init()) return false;
+    if (!game.init()) return false;
 
     return true;
 }

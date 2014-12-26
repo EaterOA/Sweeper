@@ -1,27 +1,36 @@
 #include "gameconfig.hpp"
 #include "sweepermechanics.hpp"
+#include <cstring>
 
 bool SweeperMechanics::init()
 {
     m_board = NULL;
     m_minefield = NULL;
     m_numfield = NULL;
-    reset();
     return true;
 }
 
 void SweeperMechanics::reset()
 {
+    delete m_board;
+    delete m_minefield;
+    delete m_numfield;
     m_elapsed = 0;
-}
-
-
-void SweeperMechanics::start()
-{
+    m_boardSize.x = config.getInt("board_width");
+    m_boardSize.y = config.getInt("board_height");
+    double mineProb = config.getInt("mine_perc") / 100.0;
+    m_minefield = generateMinefield(mineProb, m_boardSize.x, m_boardSize.y);
+    m_numfield = generateNumfield(m_minefield, m_boardSize.x, m_boardSize.y);
+    m_board = new int*[(int)m_boardSize.y];
+    for (int i = 0; i < m_boardSize.y; i++) {
+        m_board[i] = new int[(int)m_boardSize.x];
+        memset(m_board[i], 0, sizeof(int) * m_boardSize.x);
+    }
 }
 
 void SweeperMechanics::tick(const sf::Time &elapsed)
 {
+    m_elapsed += elapsed.asSeconds();
 }
 
 int** SweeperMechanics::getBoard()
@@ -64,10 +73,7 @@ bool** SweeperMechanics::generateMinefield(double p, int w, int h)
         for (int j = 0; j < w; j++)
         {
             int r = rand() % 100000;
-            if (r < pn)
-            {
-                minefield[i][j] = true;
-            }
+            minefield[i][j] = r < pn;
         }
     }
     return minefield;
@@ -79,6 +85,7 @@ int** SweeperMechanics::generateNumfield(bool** minefield, int w, int h)
     for (int i = 0; i < h; i++)
     {
         numfield[i] = new int[w];
+        memset(numfield[i], 0, sizeof(int) * (unsigned)w);
         for (int j = 0; j < w; j++)
         {
             if (i > 0)

@@ -8,6 +8,7 @@ bool GameConfig::init()
     std::map<std::string, std::string> defaults;
     defaults["board_width"] = "16";
     defaults["board_height"] = "16";
+    defaults["mine_perc"] = "25";
     load("config/config.txt", defaults);
 
     //Overriding certain internal configurations

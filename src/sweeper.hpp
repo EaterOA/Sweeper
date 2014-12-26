@@ -15,9 +15,10 @@ GameLayer
 class Sweeper
 {
 public:
-    virtual bool init();
-    virtual void tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m);
-    virtual void draw(sf::RenderWindow &w) const;
+    bool init();
+    void reset();
+    void tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m);
+    void draw(sf::RenderWindow &w) const;
 private:
     SweeperMechanics mAgent;
     SweeperGraphics gAgent;

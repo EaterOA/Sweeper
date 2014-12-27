@@ -9,9 +9,7 @@ class SweeperGraphics : public sf::Drawable, public sf::Transformable
 public:
     bool init();
     void updateState(int** board, int status, double elapsed);
-    void setBoardSize(sf::Vector2f boardSize);
-    void setBoardNumbers(int** numbers);
-    void setBoardMines(bool** mines);
+    void newBoard(sf::Vector2f size, bool** mines, int** num);
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     

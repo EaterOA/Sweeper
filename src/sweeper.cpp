@@ -15,9 +15,7 @@ bool Sweeper::init()
 void Sweeper::reset()
 {
     mAgent.reset();
-    gAgent.setBoardSize(mAgent.getBoardSize());
-    gAgent.setBoardMines(mAgent.getMinefield());
-    gAgent.setBoardNumbers(mAgent.getNumfield());
+    gAgent.newBoard(mAgent.getBoardSize(), mAgent.getMinefield(), mAgent.getNumfield());
 }
 
 void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)

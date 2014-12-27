@@ -1,4 +1,5 @@
 #include "util.hpp"
+#include <cstdlib>
 #include <cstring>
 #include <cmath>
 #include <sstream>
@@ -109,12 +110,12 @@ namespace util
 
     bool hasCollided(sf::Vector2f c1, sf::Vector2f c2, sf::Vector2f s2, float dir2)
     {
-        //Basic distance check
+        // Basic distance check
         float dist = getDist(c1, c2);
         if (getMaxRad(s2) < dist) return false;
         if (getMinRad(s2) > dist) return true;
 
-        //Transforming vectors
+        // Transforming vectors
         float unitX2 = cos(dir2);
         float unitY2 = sin(dir2);
         sf::Vector2f rotWidth2(unitX2 * s2.x / 2.f, unitY2 * s2.x / 2.f);
@@ -124,7 +125,7 @@ namespace util
             c2 + rotWidth2 + rotHeight2,
             c2 - rotWidth2 + rotHeight2};
 
-        //Inner check
+        // Inner check
         float si1 = crossZ(tr2[1] - tr2[0], c1 - tr2[0]);
         float si2 = crossZ(tr2[2] - tr2[1], c1 - tr2[1]);
         float si3 = crossZ(tr2[3] - tr2[2], c1 - tr2[2]);
@@ -168,13 +169,13 @@ namespace util
         return false;
     }
 
-    //Circle vs circle
+    // Circle vs circle
     bool hasCollided(sf::Vector2f c1, float r1, sf::Vector2f c2, float r2)
     {
         return (r1 + r2 > getDist(c1, c2));
     }
 
-    //Stroke vs circle
+    // Stroke vs circle
     bool hasCollided(sf::Vector2f c1, float r11, float r12, sf::Vector2f c2, float r2)
     {
         float dist = getDist(c1, c2);
@@ -183,13 +184,13 @@ namespace util
         return (dist + r2 > r11);
     }
 
-    //Stroke vs rectangle
+    // Stroke vs rectangle
     bool hasCollided(sf::Vector2f c1, float r11, float r12, sf::Vector2f c2, sf::Vector2f s2, float dir2)
     {
         if (!hasCollided(c2, s2, dir2, c1, r12)) return false;
         if (r11 < 0) return false;
 
-        //Transforming vectors
+        // Transforming vectors
         float unitX2 = cos(dir2);
         float unitY2 = sin(dir2);
         sf::Vector2f rotWidth2(unitX2 * s2.x / 2.f, unitY2 * s2.x / 2.f);
@@ -199,7 +200,7 @@ namespace util
             c2 + rotWidth2 + rotHeight2,
             c2 - rotWidth2 + rotHeight2};
 
-        //Inside edge cross check
+        // Inside edge cross check
         if (getDist(c1, tr2[0]) > r11) return true;
         if (getDist(c1, tr2[1]) > r11) return true;
         if (getDist(c1, tr2[2]) > r11) return true;
@@ -208,15 +209,15 @@ namespace util
         return false;
     }
 
-    //Rectangle vs circle
+    // Rectangle vs circle
     bool hasCollided(sf::Vector2f c1, sf::Vector2f s1, float dir1, sf::Vector2f c2, float r2)
     {
-        //Basic distance check
+        // Basic distance check
         float dist = getDist(c1, c2);
         if (getMaxRad(s1) + r2 < dist) return false;
         if (getMinRad(s1) + r2 > dist) return true;
 
-        //Transforming vectors
+        // Transforming vectors
         float unitX1 = cos(dir1);
         float unitY1 = sin(dir1);
         sf::Vector2f rotWidth1(unitX1 * s1.x / 2.f, unitY1 * s1.x / 2.f);
@@ -226,7 +227,7 @@ namespace util
             c1 + rotWidth1 + rotHeight1,
             c1 - rotWidth1 + rotHeight1};
 
-        //Inner check
+        // Inner check
         float si1 = crossZ(tr1[1] - tr1[0], c2 - tr1[0]);
         float si2 = crossZ(tr1[2] - tr1[1], c2 - tr1[1]);
         float si3 = crossZ(tr1[3] - tr1[2], c2 - tr1[2]);
@@ -243,15 +244,15 @@ namespace util
         return false;
     }
 
-    //Rectangle vs rectangle
+    // Rectangle vs rectangle
     bool hasCollided(sf::Vector2f c1, sf::Vector2f s1, float dir1, sf::Vector2f c2, sf::Vector2f s2, float dir2)
     {
-        //Basic distance check
+        // Basic distance check
         float dist = getDist(c1, c2);
         if (getMaxRad(s1) + getMaxRad(s2) < dist) return false;
         if (getMinRad(s1) + getMinRad(s2) > dist) return true;
 
-        //Transforming vectors
+        // Transforming vectors
         float unitX1 = cos(dir1);
         float unitY1 = sin(dir1);
         sf::Vector2f rotWidth1(unitX1 * s1.x / 2.f, unitY1 * s1.x / 2.f);
@@ -269,7 +270,7 @@ namespace util
             c2 + rotWidth2 + rotHeight2,
             c2 - rotWidth2 + rotHeight2};
 
-        //Axis separation theorem
+        // Axis separation theorem
         for (int i = 0; i < 4; i++) {
             sf::Vector2f separator = tr1[(i+1)%4] - tr1[i];
             float side = crossZ(tr1[(i+2)%4] - tr1[i], separator);
@@ -429,7 +430,7 @@ namespace util
         return elems;
     }
 
-    //Split on whitespace [ \t\r\n]
+    // Split on whitespace [ \t\r\n]
     std::vector<std::string> split(const std::string &s)
     {
         const std::string match = " \t\r\n";
@@ -454,5 +455,38 @@ namespace util
         std::stringstream ss;
         ss << s << n;
         return ss.str();
+    }
+
+    // Allocates a dynamic contiguous 2 dimensional array
+    // Memory structure: [pointers][data]
+    // Each pointer simply points to a known offset (row) in the data
+    // More cache-friendly compared to typical, non-contiguous 2D arrays. Also
+    // easier to free
+    void** alloc2D(unsigned esize, unsigned rows, unsigned cols)
+    {
+        char *mem, **ptrs, *data;
+        if (!(mem = (char*)malloc(sizeof(char*) * rows + esize * rows * cols)))
+            return NULL;
+        ptrs = (char**)mem;
+        data = mem + sizeof(char*) * rows;
+        for (unsigned i = 0; i < rows; i++)
+            ptrs[i] = data + i*esize*cols;
+        memset(data, 0, esize*rows*cols);
+        return (void**)ptrs;
+    }
+
+    int** alloc2Dint(unsigned rows, unsigned cols)
+    {
+        return (int**)alloc2D(sizeof(int), rows, cols);
+    }
+
+    bool** alloc2Dbool(unsigned rows, unsigned cols)
+    {
+        return (bool**)alloc2D(sizeof(bool), rows, cols);
+    }
+
+    void free2D(void* arr)
+    {
+        free(arr);
     }
 }

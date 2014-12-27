@@ -14,12 +14,18 @@ bool Sweeper::init()
 
 void Sweeper::reset()
 {
+    m_elapsed = 0;
+    m_status = 0;
     mAgent.reset();
-    gAgent.newBoard(mAgent.getBoardSize(), mAgent.getMinefield(), mAgent.getNumfield());
+    gAgent.newBoard(mAgent.getSize(), mAgent.getMinefield(), mAgent.getNumfield());
 }
 
 void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
 {
+    // track time
+    if (m_status == 0)
+        m_elapsed += t.asSeconds();
+
     // process events
     for (unsigned i = 0; i < e.size(); i++) {
         if (e[i].type == sf::Event::MouseButtonPressed) {
@@ -27,7 +33,7 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
         }
     }
 
-    gAgent.updateState(mAgent.getBoard(), mAgent.getStatus(), mAgent.getElapsed());
+    gAgent.updateState(mAgent.getBoard(), m_status, m_elapsed);
 }
 
 void Sweeper::draw(sf::RenderWindow &w) const

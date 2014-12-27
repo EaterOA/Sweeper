@@ -1,6 +1,6 @@
 #include "gameconfig.hpp"
 #include "sweepermechanics.hpp"
-#include <cstring>
+#include "util.hpp"
 
 bool SweeperMechanics::init()
 {
@@ -12,25 +12,15 @@ bool SweeperMechanics::init()
 
 void SweeperMechanics::reset()
 {
-    delete m_board;
-    delete m_minefield;
-    delete m_numfield;
-    m_elapsed = 0;
-    m_boardSize.x = config.getInt("board_width");
-    m_boardSize.y = config.getInt("board_height");
+    util::free2D(m_board);
+    util::free2D(m_minefield);
+    util::free2D(m_numfield);
+    m_size.x = (unsigned)config.getInt("board_width");
+    m_size.y = (unsigned)config.getInt("board_height");
     double mineProb = config.getInt("mine_perc") / 100.0;
-    m_minefield = generateMinefield(mineProb, m_boardSize.x, m_boardSize.y);
-    m_numfield = generateNumfield(m_minefield, m_boardSize.x, m_boardSize.y);
-    m_board = new int*[(int)m_boardSize.y];
-    for (int i = 0; i < m_boardSize.y; i++) {
-        m_board[i] = new int[(int)m_boardSize.x];
-        memset(m_board[i], 0, sizeof(int) * m_boardSize.x);
-    }
-}
-
-void SweeperMechanics::tick(const sf::Time &elapsed)
-{
-    m_elapsed += elapsed.asSeconds();
+    m_minefield = generateMinefield(mineProb, m_size.x, m_size.y);
+    m_numfield = generateNumfield(m_minefield, m_size.x, m_size.y);
+    m_board = util::alloc2Dint(m_size.x, m_size.y);
 }
 
 int** SweeperMechanics::getBoard()
@@ -48,29 +38,18 @@ int** SweeperMechanics::getNumfield()
     return m_numfield;
 }
 
-int SweeperMechanics::getStatus()
+sf::Vector2<unsigned> SweeperMechanics::getSize()
 {
-    return m_status;
+    return m_size;
 }
 
-sf::Vector2f SweeperMechanics::getBoardSize()
-{
-    return m_boardSize;
-}
-
-double SweeperMechanics::getElapsed()
-{
-    return m_elapsed;
-}
-
-bool** SweeperMechanics::generateMinefield(double p, int w, int h)
+bool** SweeperMechanics::generateMinefield(double p, unsigned w, unsigned h)
 {
     int pn = p * 100000;
-    bool** minefield = new bool*[h];
-    for (int i = 0; i < h; i++)
+    bool** minefield = util::alloc2Dbool(h, w);
+    for (unsigned i = 0; i < h; i++)
     {
-        minefield[i] = new bool[w];
-        for (int j = 0; j < w; j++)
+        for (unsigned j = 0; j < w; j++)
         {
             int r = rand() % 100000;
             minefield[i][j] = r < pn;
@@ -79,14 +58,12 @@ bool** SweeperMechanics::generateMinefield(double p, int w, int h)
     return minefield;
 }
 
-int** SweeperMechanics::generateNumfield(bool** minefield, int w, int h)
+int** SweeperMechanics::generateNumfield(bool** minefield, unsigned w, unsigned h)
 {
-    int** numfield = new int*[h];
-    for (int i = 0; i < h; i++)
+    int** numfield = util::alloc2Dint(h, w);
+    for (unsigned i = 0; i < h; i++)
     {
-        numfield[i] = new int[w];
-        memset(numfield[i], 0, sizeof(int) * (unsigned)w);
-        for (int j = 0; j < w; j++)
+        for (unsigned j = 0; j < w; j++)
         {
             if (i > 0)
             {

@@ -22,6 +22,8 @@ public:
 private:
     SweeperMechanics mAgent;
     SweeperGraphics gAgent;
+    int m_status;
+    double m_elapsed;
 };
 
 #endif

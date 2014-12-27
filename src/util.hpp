@@ -9,7 +9,7 @@
 
 namespace util
 {
-    //Geometry
+    // Geometry
     enum Shape { Circle, Rectangle, Stroke, Point };
     struct ShapeVector
     {
@@ -36,7 +36,7 @@ namespace util
     sf::Vector2f getUnitVector(sf::Vector2f p1, sf::Vector2f p2);
     sf::Vector2f rotate(sf::Vector2f v, float rad);
 
-    //Collision logic
+    // Collision logic
     bool hasCollided(sf::Vector2f c1, util::ShapeVector s1, float dir1, sf::Vector2f c2, util::ShapeVector s2, float dir2);
     bool hasCollided(sf::Vector2f c1, sf::Vector2f c2);
     bool hasCollided(sf::Vector2f c1, sf::Vector2f c2, float r2);
@@ -48,7 +48,7 @@ namespace util
     bool hasCollided(sf::Vector2f c1, sf::Vector2f s1, float dir1, sf::Vector2f c2, float r2);
     bool hasCollided(sf::Vector2f c1, sf::Vector2f s1, float dir1, sf::Vector2f c2, sf::Vector2f s2, float dir2);
 
-    //Sprite manipulation
+    // Sprite manipulation
     sf::Vector2f referenceToCenter(sf::Vector2f pos, sf::Vector2f size, int reference);
     void copySprite(const sf::Vertex src[4], sf::Vertex dest[4]);
     void copyTexture(const sf::Vertex src[4], sf::Vertex dest[4]);
@@ -61,13 +61,19 @@ namespace util
     sf::Vector2f translatePos(sf::Vector2f pos, float dir, float offsetX, float offsetY);
     sf::Vector2f translatePos(sf::Vector2f pos, float unitX, float unitY, float offsetX, float offsetY);
 
-    //String manipulation
+    // String manipulation
     std::string trim(const std::string &s);
     std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
     std::vector<std::string> split(const std::string &s, char delim);
     std::vector<std::string> split(const std::string &s);
     std::string appendNumber(const std::string &s, int n);
     bool isPrefix(const std::string &p, const std::string &s);
+
+    // Memory management
+    void** alloc2D(unsigned esize, unsigned rows, unsigned cols);
+    int** alloc2Dint(unsigned rows, unsigned cols);
+    bool** alloc2Dbool(unsigned rows, unsigned cols);
+    void free2D(void* arr);
 }
 
 #endif

@@ -1,11 +1,3 @@
-/*
---------------------------------------------------------------------------------
-GameLayer
-- Adds layer-management functions specific to WarDance
-- Defines WarDance-specific layer types
---------------------------------------------------------------------------------
-*/
-
 #ifndef SWEEPER_HPP
 #define SWEEPER_HPP
 

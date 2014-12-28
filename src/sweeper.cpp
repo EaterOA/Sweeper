@@ -29,7 +29,9 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
     // process events
     for (unsigned i = 0; i < e.size(); i++) {
         if (e[i].type == sf::Event::MouseButtonPressed) {
-            std::cout << "HI!\n";
+            sf::Vector2<unsigned> tile = gAgent.getTile(e[i].mouseButton.x, e[i].mouseButton.y);
+            if (tile.x == 1 && tile.y == 2)
+                std::cout << "HI!\n";
         }
     }
 

@@ -10,6 +10,7 @@ public:
     bool init();
     void updateState(int** board, int status, double elapsed);
     void newBoard(sf::Vector2<unsigned> size, bool** mines, int** num);
+    sf::Vector2<unsigned> getTile(float x, float y);
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     

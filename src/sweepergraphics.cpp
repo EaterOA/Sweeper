@@ -75,3 +75,12 @@ void SweeperGraphics::newBoard(sf::Vector2<unsigned> size, bool** mines, int** n
                            1);
         }
 }
+
+sf::Vector2<unsigned> SweeperGraphics::getTile(float x, float y)
+{
+    sf::Vector2<unsigned> tile((unsigned)(x/32), (unsigned)(y/32));
+    sf::Vector2<unsigned> noTile((unsigned)-1, (unsigned)-1);
+    if (tile.x >= m_size.x || tile.y >= m_size.y)
+        return noTile;
+    return tile;
+}

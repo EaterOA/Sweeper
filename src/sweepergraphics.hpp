@@ -8,7 +8,8 @@ class SweeperGraphics : public sf::Drawable, public sf::Transformable
 {
 public:
     bool init();
-    void updateState(int** board, int status, double elapsed);
+    void updateBoard(int** board, int status, bool pressing, bool triggering, sf::Vector2<unsigned> loc);
+    void updateTimer(double elapsed);
     void newBoard(sf::Vector2<unsigned> size, bool** mines, int** num);
     sf::Vector2<unsigned> getTile(float x, float y);
 private:

@@ -14,14 +14,26 @@ bool SweeperGraphics::init()
     return true;
 }
 
-void SweeperGraphics::updateState(int** board, int status, double elapsed)
+void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool triggering, sf::Vector2<unsigned> loc)
 {
     for (unsigned r = 0; r < m_size.y; r++)
         for (unsigned c = 0; c < m_size.x; c++) {
             util::affixTexture(&m_tiles[4 * (r * m_size.x + c)],
-                               sf::Vector2f(32 * board[r][c], 0),
+                               sf::Vector2f(0, 0),
                                sf::Vector2f(32, 32));
         }
+
+    if (pressing) {
+        if (board[loc.y][loc.x] == 0) {
+            util::affixTexture(&m_tiles[4 * (loc.y * m_size.x + loc.x)],
+                               sf::Vector2f(32, 0),
+                               sf::Vector2f(32, 32));
+        }
+    }
+}
+
+void SweeperGraphics::updateTimer(double elapsed)
+{
 }
 
 void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) const

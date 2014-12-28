@@ -16,6 +16,9 @@ private:
     SweeperGraphics gAgent;
     int m_status;
     double m_elapsed;
+
+    bool m_pressing;
+    sf::Vector2<unsigned> m_pressLoc;
 };
 
 #endif

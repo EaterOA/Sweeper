@@ -29,13 +29,26 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
     // process events
     for (unsigned i = 0; i < e.size(); i++) {
         if (e[i].type == sf::Event::MouseButtonPressed) {
-            sf::Vector2<unsigned> tile = gAgent.getTile(e[i].mouseButton.x, e[i].mouseButton.y);
-            if (tile.x == 1 && tile.y == 2)
-                std::cout << "HI!\n";
+            m_pressing = true;
+            m_pressLoc = gAgent.getTile(e[i].mouseButton.x, e[i].mouseButton.y);
+            if (m_pressLoc.x == (unsigned)-1)
+                m_pressing = false;
+        }
+        else if (e[i].type == sf::Event::MouseButtonReleased) {
+            if (m_pressing) {
+                sf::Vector2<unsigned> cur = gAgent.getTile(e[i].mouseButton.x, e[i].mouseButton.y);
+                if (m_pressLoc.x == cur.x && m_pressLoc.y == cur.y)
+                    mAgent.openTile(cur.x, cur.y);
+                m_pressing = false;
+            }
+        }
+        else if (e[i].type == sf::Event::MouseLeft) {
+            m_pressing = false;
         }
     }
 
-    gAgent.updateState(mAgent.getBoard(), m_status, m_elapsed);
+    gAgent.updateBoard(mAgent.getBoard(), m_status, m_pressing, false, m_pressLoc);
+    gAgent.updateTimer(m_elapsed);
 }
 
 void Sweeper::draw(sf::RenderWindow &w) const

@@ -23,17 +23,17 @@ void SweeperMechanics::reset()
     m_board = util::alloc2Dint(m_size.x, m_size.y);
 }
 
-int openTile(unsigned r, unsigned c)
+int SweeperMechanics::openTile(unsigned r, unsigned c)
 {
     return 0; // game continue
 }
 
-int triggerTile(unsigned r, unsigned c)
+int SweeperMechanics::triggerTile(unsigned r, unsigned c)
 {
     return 0; // game continue
 }
 
-int flagTile(unsigned r, unsigned c)
+int SweeperMechanics::flagTile(unsigned r, unsigned c)
 {
     return 0;
 }

@@ -11,7 +11,9 @@ class SweeperMechanics
 public:
     bool init();
     void reset();
-    void start();
+    int openTile(unsigned r, unsigned c);
+    int triggerTile(unsigned r, unsigned c);
+    int flagTile(unsigned r, unsigned c);
     sf::Vector2<unsigned> getSize();
     int** getBoard();
     bool** getMinefield();

@@ -46,8 +46,10 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
             m_pressing = false;
         }
     }
+    sf::Vector2<unsigned> mcur = gAgent.getTile(m.x, m.y);
+    bool pressingInitLoc = m_pressing && m_pressLoc.x == mcur.x && m_pressLoc.y == mcur.y;
 
-    gAgent.updateBoard(mAgent.getBoard(), m_status, m_pressing, false, m_pressLoc);
+    gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, false, m_pressLoc);
     gAgent.updateTimer(m_elapsed);
 }
 

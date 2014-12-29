@@ -18,16 +18,33 @@ void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool t
 {
     for (unsigned r = 0; r < m_size.y; r++)
         for (unsigned c = 0; c < m_size.x; c++) {
-            util::affixTexture(&m_tiles[4 * (r * m_size.x + c)],
-                               sf::Vector2f(0, 0),
+            unsigned idx = 4 * (r * m_size.x + c);
+            util::affixTexture(&m_tiles[idx],
+                               sf::Vector2f(32.f * board[r][c], 0),
                                sf::Vector2f(32, 32));
         }
 
     if (pressing) {
-        if (board[loc.y][loc.x] == 0) {
-            util::affixTexture(&m_tiles[4 * (loc.y * m_size.x + loc.x)],
-                               sf::Vector2f(32, 0),
+        int r = loc.y, c = loc.x;
+        if (board[r][c] == 0) {
+            util::affixTexture(&m_tiles[4 * (r * m_size.x + c)],
+                               sf::Vector2f(0, 32),
                                sf::Vector2f(32, 32));
+        }
+        if (triggering) {
+            int offset[][2] = {{-1,-1},{0,-1},{1,-1},
+                                {-1,0},{1,0},
+                                {-1,1},{0,1},{1,1}};
+            for (int i = 0; i < 8; i++) {
+                int nr = r + offset[i][0],
+                    nc = c + offset[i][1];
+                if (nr >= 0 && nr < m_size.y && nc >= 0 && nc < m_size.x &&
+                    board[nr][nc] == 0) {
+                    util::affixTexture(&m_tiles[4 * (nr * m_size.x + nc)],
+                                       sf::Vector2f(0, 32),
+                                       sf::Vector2f(32, 32));
+                }
+            }
         }
     }
 }
@@ -61,7 +78,7 @@ void SweeperGraphics::newBoard(sf::Vector2<unsigned> size, bool** mines, int** n
                 for (int i = 0; i < 4; i++)
                     m_mines.push_back(sf::Vertex());
                 util::affixPos(&m_mines[m_mines.size()-4],
-                               sf::Vector2f(32 * c, 32 * r),
+                               sf::Vector2f(32.f * c, 32.f * r),
                                sf::Vector2f(32, 32),
                                1);
                 util::affixTexture(&m_mines[m_mines.size()-4],
@@ -71,18 +88,18 @@ void SweeperGraphics::newBoard(sf::Vector2<unsigned> size, bool** mines, int** n
 
             // affixing position and texture for numfield
             util::affixPos(&m_numbers[idx],
-                           sf::Vector2f(32 * c, 32 * r),
+                           sf::Vector2f(32.f * c, 32.f * r),
                            sf::Vector2f(32, 32),
                            1);
-            int tx = 32 * (num[r][c] % 3);
-            int ty = 32 * (num[r][c] / 3);
+            float tx = 32.f * (num[r][c] % 3);
+            float ty = 32.f * (num[r][c] / 3);
             util::affixTexture(&m_numbers[idx],
                                sf::Vector2f(tx, ty),
                                sf::Vector2f(32, 32));
 
             // affixing position for board
             util::affixPos(&m_tiles[idx],
-                           sf::Vector2f(32 * c, 32 * r),
+                           sf::Vector2f(32.f * c, 32.f * r),
                            sf::Vector2f(32, 32),
                            1);
         }

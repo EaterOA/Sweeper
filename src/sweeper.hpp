@@ -12,12 +12,16 @@ public:
     void tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m);
     void draw(sf::RenderWindow &w) const;
 private:
+    void processPress(sf::Event &e);
+    void processRelease(sf::Event &e);
+
     SweeperMechanics mAgent;
     SweeperGraphics gAgent;
     int m_status;
     double m_elapsed;
 
     bool m_pressing;
+    bool m_triggering;
     sf::Vector2<int> m_pressLoc;
 };
 

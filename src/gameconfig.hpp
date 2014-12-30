@@ -6,7 +6,7 @@
 class GameConfig: public Config
 {
 public:
-    bool init();    
+    bool init();
 };
 
 extern GameConfig config;

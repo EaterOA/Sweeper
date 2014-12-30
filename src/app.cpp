@@ -9,7 +9,7 @@ Sweeper game;
 
 bool appInit()
 {
-    srand(unsigned(time(0)));
+    srand(time(0));
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     window.create(sf::VideoMode(800, 600), "Sweeper", sf::Style::Close, settings);

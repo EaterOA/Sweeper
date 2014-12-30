@@ -14,11 +14,11 @@ bool SweeperGraphics::init()
     return true;
 }
 
-void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool triggering, sf::Vector2<unsigned> loc)
+void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool triggering, sf::Vector2<int> loc)
 {
-    for (unsigned r = 0; r < m_size.y; r++)
-        for (unsigned c = 0; c < m_size.x; c++) {
-            unsigned idx = 4 * (r * m_size.x + c);
+    for (int r = 0; r < m_size.y; r++)
+        for (int c = 0; c < m_size.x; c++) {
+            int idx = 4 * (r * m_size.x + c);
             util::affixTexture(&m_tiles[idx],
                                sf::Vector2f(32.f * board[r][c], 0),
                                sf::Vector2f(32, 32));
@@ -62,16 +62,16 @@ void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) co
     target.draw(&m_numbers[0], m_numbers.size(), sf::Quads, states);
 }
 
-void SweeperGraphics::newBoard(sf::Vector2<unsigned> size, bool** mines, int** num)
+void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)
 {
     m_size = size;
     m_numbers = std::vector<sf::Vertex>(4 * m_size.x * m_size.y, sf::Vertex());
     m_tiles = std::vector<sf::Vertex>(4 * m_size.x * m_size.y, sf::Vertex());
     m_mines = std::vector<sf::Vertex>();
 
-    for (unsigned r = 0; r < m_size.y; r++)
-        for (unsigned c = 0; c < m_size.x; c++) {
-            unsigned idx = 4 * (r * m_size.x + c);
+    for (int r = 0; r < m_size.y; r++)
+        for (int c = 0; c < m_size.x; c++) {
+            int idx = 4 * (r * m_size.x + c);
 
             // affixing position and texture for minefield
             if (mines[r][c]) {
@@ -105,10 +105,10 @@ void SweeperGraphics::newBoard(sf::Vector2<unsigned> size, bool** mines, int** n
         }
 }
 
-sf::Vector2<unsigned> SweeperGraphics::getTile(float x, float y)
+sf::Vector2<int> SweeperGraphics::getTile(float x, float y)
 {
-    sf::Vector2<unsigned> tile((unsigned)(x/32), (unsigned)(y/32));
-    sf::Vector2<unsigned> noTile((unsigned)-1, (unsigned)-1);
+    sf::Vector2<int> tile(x/32, y/32);
+    sf::Vector2<int> noTile(-1, -1);
     if (tile.x >= m_size.x || tile.y >= m_size.y)
         return noTile;
     return tile;

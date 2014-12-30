@@ -18,7 +18,7 @@ private:
     double m_elapsed;
 
     bool m_pressing;
-    sf::Vector2<unsigned> m_pressLoc;
+    sf::Vector2<int> m_pressLoc;
 };
 
 #endif

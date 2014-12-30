@@ -38,7 +38,7 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
             if (m_pressing) {
                 sf::Vector2<unsigned> cur = gAgent.getTile(e[i].mouseButton.x, e[i].mouseButton.y);
                 if (m_pressLoc.x == cur.x && m_pressLoc.y == cur.y)
-                    mAgent.openTile(cur.x, cur.y);
+                    m_status = mAgent.openTile(cur.y, cur.x);
                 m_pressing = false;
             }
         }

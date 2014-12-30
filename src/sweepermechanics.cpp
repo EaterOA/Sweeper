@@ -25,16 +25,65 @@ void SweeperMechanics::reset()
 
 int SweeperMechanics::openTile(unsigned r, unsigned c)
 {
+    if(m_board[r][c] == 0)
+    {
+        if(m_minefield[r][c])
+        {
+            return 1; 
+        }
+        else
+        {
+            m_board[r][c] = 2;
+        }
+    }
+
     return 0; // game continue
 }
 
 int SweeperMechanics::triggerTile(unsigned r, unsigned c)
 {
+    int flags = 0;
+    for(int i = (int)r - 1; i <= (int)r + 1; i++)
+    {
+        for(int j = (int)c - 1; j <= (int)c + 1; j++)
+        {
+            if(i >= 0 && i < (int)m_size.y
+              && j >= 0 && j < (int)m_size.x
+              && m_board[i][j] == 1)
+            {
+                flags++;
+            }
+        }
+    }
+
+    if(flags == m_numfield[r][c])
+    {
+        for(int i = (int)r - 1; i <= (int)r + 1; i++)
+        {
+            for(int j = (int)c - 1; j <= (int)c + 1; j++)
+            {
+                if(i >= 0 && i < (int)m_size.y
+                  && j >= 0 && j < (int)m_size.x
+                  && m_board[i][j] == 0)
+                { 
+                    int res = openTile((unsigned)i, (unsigned)j);
+                    if(res == 1)
+                        return 1; 
+                }
+            }
+        }               
+    }
+
     return 0; // game continue
 }
 
 int SweeperMechanics::flagTile(unsigned r, unsigned c)
-{
+{ 
+    if(m_board[r][c] == 0)
+        m_board[r][c] = 1;
+    else if(m_board[r][c] == 1)
+        m_board[r][c] = 0;
+    
     return 0;
 }
 

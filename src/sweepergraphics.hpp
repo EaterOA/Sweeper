@@ -15,6 +15,7 @@ public:
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+    int m_status;
     sf::Vector2<int> m_size;
     sf::RectangleShape m_background;
     sf::Texture m_tilesheet;

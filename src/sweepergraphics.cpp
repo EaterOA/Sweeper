@@ -5,7 +5,8 @@
 bool SweeperGraphics::init()
 {
     if (!m_tilesheet.loadFromFile("img/tilesheet.png") ||
-        !m_numbersheet.loadFromFile("img/numbersheet.png"))
+        !m_numbersheet.loadFromFile("img/numbersheet.png") ||
+        !m_minesheet.loadFromFile("img/mine.png"))
         return false;
 
     m_background.setSize(sf::Vector2f(800, 600));
@@ -16,6 +17,8 @@ bool SweeperGraphics::init()
 
 void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool triggering, sf::Vector2<int> loc)
 {
+    m_status = status;
+
     for (int r = 0; r < m_size.y; r++)
         for (int c = 0; c < m_size.x; c++) {
             int idx = 4 * (r * m_size.x + c);
@@ -60,6 +63,10 @@ void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) co
     target.draw(&m_tiles[0], m_tiles.size(), sf::Quads, states);
     states.texture = &m_numbersheet;
     target.draw(&m_numbers[0], m_numbers.size(), sf::Quads, states);
+    if (m_status == 1) {
+        states.texture = &m_minesheet;
+        target.draw(&m_mines[0], m_mines.size(), sf::Quads, states);
+    }
 }
 
 void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)

@@ -66,6 +66,9 @@ void Sweeper::processRelease(sf::Event &e)
 
 void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
 {
+    if (m_status != 0)
+        return;
+
     // track time
     if (m_status == 0)
         m_elapsed += t.asSeconds();

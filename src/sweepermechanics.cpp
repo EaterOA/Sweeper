@@ -56,6 +56,7 @@ int SweeperMechanics::triggerTile(int r, int c)
         }
     }
 
+    int res = 0;
     if(flags == m_numfield[r][c])
     {
         for(int i = r - 1; i <= r + 1; i++)
@@ -66,15 +67,15 @@ int SweeperMechanics::triggerTile(int r, int c)
                   && j >= 0 && j < m_size.x
                   && m_board[i][j] == 0)
                 {
-                    int res = openTile(i, j);
-                    if(res == 1)
-                        return 1;
+                    int temp = openTile(i, j);
+                    if (res == 0)
+                        res = temp;
                 }
             }
         }
     }
 
-    return 0; // game continue
+    return res;
 }
 
 int SweeperMechanics::flagTile(int r, int c)
@@ -85,6 +86,19 @@ int SweeperMechanics::flagTile(int r, int c)
         m_board[r][c] = 0;
 
     return 0;
+}
+
+void SweeperMechanics::markWrongTiles()
+{
+    for (int r = 0; r < m_size.y; r++)
+    for (int c = 0; c < m_size.x; c++)
+    {
+        //if no mine, but we mark
+        if (!m_minefield[r][c] && m_board[r][c] == 1)
+        {
+            m_board[r][c] = 3;
+        }
+    }
 }
 
 int** SweeperMechanics::getBoard()

@@ -6,6 +6,7 @@
 
 class SweeperEngine;
 
+//flags: 0 = unmarked, 1 = marked, 2 = open, 3 = wrong
 class SweeperMechanics
 {
 public:
@@ -14,6 +15,7 @@ public:
     int openTile(int r, int c);
     int triggerTile(int r, int c);
     int flagTile(int r, int c);
+    void markWrongTiles();
     sf::Vector2<int> getSize();
     int** getBoard();
     bool** getMinefield();

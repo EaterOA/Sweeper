@@ -18,9 +18,9 @@ void SweeperMechanics::reset()
     m_size.x = config.getInt("board_width");
     m_size.y = config.getInt("board_height");
     double mineProb = config.getInt("mine_perc") / 100.0;
-    m_minefield = generateMinefield(mineProb, m_size.x, m_size.y);
-    m_numfield = generateNumfield(m_minefield, m_size.x, m_size.y);
-    m_board = util::alloc2Dint(m_size.x, m_size.y);
+    m_minefield = generateMinefield(mineProb, m_size.y, m_size.x);
+    m_numfield = generateNumfield(m_minefield, m_size.y, m_size.x);
+    m_board = util::alloc2Dint(m_size.y, m_size.x);
 }
 
 int SweeperMechanics::openTile(int r, int c)
@@ -121,13 +121,13 @@ sf::Vector2<int> SweeperMechanics::getSize()
     return m_size;
 }
 
-bool** SweeperMechanics::generateMinefield(double p, int w, int h)
+bool** SweeperMechanics::generateMinefield(double p, int rows, int cols)
 {
     int pn = p * 100000;
-    bool** minefield = util::alloc2Dbool(h, w);
-    for (int i = 0; i < h; i++)
+    bool** minefield = util::alloc2Dbool(rows, cols);
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < w; j++)
+        for (int j = 0; j < cols; j++)
         {
             int r = rand() % 100000;
             minefield[i][j] = r < pn;
@@ -136,32 +136,32 @@ bool** SweeperMechanics::generateMinefield(double p, int w, int h)
     return minefield;
 }
 
-int** SweeperMechanics::generateNumfield(bool** minefield, int w, int h)
+int** SweeperMechanics::generateNumfield(bool** minefield, int rows, int cols)
 {
-    int** numfield = util::alloc2Dint(h, w);
-    for (int i = 0; i < h; i++)
+    int** numfield = util::alloc2Dint(rows, cols);
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < w; j++)
+        for (int j = 0; j < cols; j++)
         {
             if (i > 0)
             {
                 numfield[i][j] = numfield[i][j] + minefield[i-1][j];
                 if (j > 0)
                     numfield[i][j] = numfield[i][j] + minefield[i-1][j-1];
-                if (j < w - 1)
+                if (j < cols - 1)
                     numfield[i][j] = numfield[i][j] + minefield[i-1][j+1];
             }
-            if (i < h - 1)
+            if (i < rows - 1)
             {
                 numfield[i][j] = numfield[i][j] + minefield[i+1][j];
                 if (j > 0)
                     numfield[i][j] = numfield[i][j] + minefield[i+1][j-1];
-                if (j < w - 1)
+                if (j < cols - 1)
                     numfield[i][j] = numfield[i][j] + minefield[i+1][j+1];
             }
             if (j > 0)
                 numfield[i][j] = numfield[i][j] + minefield[i][j-1];
-            if (j < w - 1)
+            if (j < cols - 1)
                 numfield[i][j] = numfield[i][j] + minefield[i][j+1];
             numfield[i][j] = numfield[i][j] + minefield[i][j];
         }

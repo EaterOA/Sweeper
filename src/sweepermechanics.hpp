@@ -21,8 +21,8 @@ public:
     bool** getMinefield();
     int** getNumfield();
 private:
-    bool** generateMinefield(double p, int w, int h);
-    int** generateNumfield(bool** minefield, int w, int h);
+    bool** generateMinefield(double p, int rows, int cols);
+    int** generateNumfield(bool** minefield, int rows, int cols);
 
     sf::Vector2<int> m_size;
     bool** m_minefield;

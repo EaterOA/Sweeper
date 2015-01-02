@@ -24,44 +24,39 @@ void Sweeper::processPress(sf::Event &e)
 {
     sf::Vector2<int> loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
 
+    if (loc.x == -1) {
+        m_leftClicking = m_rightClicking = false;
+        return;
+    }
+
     if (e.mouseButton.button == sf::Mouse::Left) {
-        if (loc.x == -1) {
-            m_pressing = false;
-        }
-        else {
-            m_pressing = true;
-            m_pressLoc = loc;
-        }
+        m_leftClicking = true;
+        if (m_rightClicking && (m_pressLoc.x != loc.x || m_pressLoc.y != loc.y))
+            m_rightClicking = false;
     }
     else if (e.mouseButton.button == sf::Mouse::Right) {
-        if (!m_pressing) {
-            if (loc.x != -1)
-                mAgent.flagTile(loc.y, loc.x);
-        }
-        else {
-            m_triggering = true;
-        }
+        m_rightClicking = true;
+        if (m_leftClicking && (m_pressLoc.x != loc.x || m_pressLoc.y != loc.y))
+            m_leftClicking = false;
     }
+    m_pressLoc = loc;
 }
 
 void Sweeper::processRelease(sf::Event &e)
 {
     sf::Vector2<int> loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
 
-    if (m_triggering && (e.mouseButton.button == sf::Mouse::Left ||
-                         e.mouseButton.button == sf::Mouse::Right)) {
+    if (m_leftClicking || m_rightClicking) {
         if (m_pressLoc.x == loc.x && m_pressLoc.y == loc.y) {
-            m_status = mAgent.triggerTile(loc.y, loc.x);
+            if (m_leftClicking && m_rightClicking)
+                m_status = mAgent.triggerTile(loc.y, loc.x);
+            else if (m_leftClicking)
+                m_status = mAgent.openTile(loc.y, loc.x);
+            else if (m_rightClicking)
+                m_status = mAgent.flagTile(loc.y, loc.x);
         }
-        m_pressing = false;
-        m_triggering = false;
     }
-    else if (e.mouseButton.button == sf::Mouse::Left) {
-        if (m_pressing && m_pressLoc.x == loc.x && m_pressLoc.y == loc.y) {
-            m_status = mAgent.openTile(loc.y, loc.x);
-        }
-        m_pressing = false;
-    }
+    m_leftClicking = m_rightClicking = false;
 }
 
 void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
@@ -79,15 +74,13 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
             processPress(e[i]);
         else if (e[i].type == sf::Event::MouseButtonReleased)
             processRelease(e[i]);
-        else if (e[i].type == sf::Event::MouseLeft) {
-            m_pressing = false;
-            m_triggering = false;
-        }
+        else if (e[i].type == sf::Event::MouseLeft)
+            m_leftClicking = m_rightClicking = false;
     }
     sf::Vector2<int> mcur = gAgent.getTile(m.x, m.y);
-    bool pressingInitLoc = m_pressing && m_pressLoc.x == mcur.x && m_pressLoc.y == mcur.y;
+    bool pressingInitLoc = m_leftClicking && m_pressLoc.x == mcur.x && m_pressLoc.y == mcur.y;
 
-    gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_triggering, m_pressLoc);
+    gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_leftClicking && m_rightClicking, m_pressLoc);
     gAgent.updateTimer(m_elapsed);
 }
 

@@ -20,8 +20,8 @@ private:
     int m_status;
     double m_elapsed;
 
-    bool m_pressing;
-    bool m_triggering;
+    bool m_leftClicking;
+    bool m_rightClicking;
     sf::Vector2<int> m_pressLoc;
 };
 

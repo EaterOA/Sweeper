@@ -28,6 +28,7 @@ private:
     bool** m_minefield;
     int** m_numfield;
     int** m_board;
+    int m_opened, m_free;
 };
 
 #endif

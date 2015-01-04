@@ -2,6 +2,8 @@
 #include "sweepermechanics.hpp"
 #include "util.hpp"
 
+using namespace std;
+
 bool SweeperMechanics::init()
 {
     m_board = NULL;
@@ -12,6 +14,8 @@ bool SweeperMechanics::init()
 
 void SweeperMechanics::reset()
 {
+    m_opened = 0;
+    m_free = 0;
     util::free2D(m_board);
     util::free2D(m_minefield);
     util::free2D(m_numfield);
@@ -33,6 +37,9 @@ int SweeperMechanics::openTile(int r, int c)
         }
         else
         {
+            m_opened++;
+            if(m_opened == m_free)
+                return 2;
             m_board[r][c] = 2;
         }
     }
@@ -131,6 +138,7 @@ bool** SweeperMechanics::generateMinefield(double p, int rows, int cols)
         {
             int r = rand() % 100000;
             minefield[i][j] = r < pn;
+            m_free += r >= pn;
         }
     }
     return minefield;

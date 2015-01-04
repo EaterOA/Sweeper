@@ -7,6 +7,9 @@ class GameConfig: public Config
 {
 public:
     bool init();
+    void reload();
+private:
+    void constrainInts();
 };
 
 extern GameConfig config;

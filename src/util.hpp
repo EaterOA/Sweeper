@@ -2,6 +2,7 @@
 #define UTIL_HPP
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #define MIN(a,b) (a < b ? a : b)
 #define MAX(a,b) (a > b ? a : b)

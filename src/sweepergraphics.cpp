@@ -17,8 +17,10 @@ bool SweeperGraphics::init()
 
 void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool triggering, sf::Vector2<int> loc)
 {
+    // updating state variables
     m_status = status;
 
+    // retiling the board
     for (int r = 0; r < m_size.y; r++)
         for (int c = 0; c < m_size.x; c++) {
             int idx = 4 * (r * m_size.x + c);
@@ -27,26 +29,37 @@ void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool t
                                sf::Vector2f(32, 32));
         }
 
+    // only allow unmarked tiles to be visible (when game is lost)
+    int idx = 0;
+    for (int r = 0; r < m_size.y && idx < (int)m_mines.size(); r++)
+        for (int c = 0; c < m_size.x && idx < (int)m_mines.size(); c++) {
+            if (r*32 == m_mines[idx].position.y &&
+                c*32 == m_mines[idx].position.x) {
+                sf::Vector2f tex(32, 32);
+                if (board[r][c] != 0)
+                    tex *= 0.f;
+                util::affixTexture(&m_mines[idx],
+                                   sf::Vector2f(32.f * board[r][c], 0),
+                                   tex);
+                idx += 4;
+                }
+        }
+
+    // button clicking effects
     if (pressing) {
         int r = loc.y, c = loc.x;
-        if (board[r][c] == 0) {
-            util::affixTexture(&m_tiles[4 * (r * m_size.x + c)],
-                               sf::Vector2f(0, 32),
-                               sf::Vector2f(32, 32));
-        }
-        if (triggering) {
-            int offset[][2] = {{-1,-1},{0,-1},{1,-1},
-                                {-1,0},{1,0},
-                                {-1,1},{0,1},{1,1}};
-            for (int i = 0; i < 8; i++) {
-                int nr = r + offset[i][0],
-                    nc = c + offset[i][1];
-                if (nr >= 0 && nr < m_size.y && nc >= 0 && nc < m_size.x &&
-                    board[nr][nc] == 0) {
-                    util::affixTexture(&m_tiles[4 * (nr * m_size.x + nc)],
-                                       sf::Vector2f(0, 32),
-                                       sf::Vector2f(32, 32));
-                }
+        for (int i = r-1; i <= r+1; i++) {
+            for (int j = c-1; j <= c+1; j++) {
+                if (i < 0 || i >= m_size.y || j < 0 || j >= m_size.x)
+                    continue;
+                if (board[i][j] != 0)
+                    continue;
+                // only affect surrounding tiles if triggering
+                if (!triggering && (i != r || j != c))
+                    continue;
+                util::affixTexture(&m_tiles[4 * (i * m_size.x + j)],
+                                   sf::Vector2f(0, 32),
+                                   sf::Vector2f(32, 32));
             }
         }
     }
@@ -72,15 +85,15 @@ void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) co
 void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)
 {
     m_size = size;
-    m_numbers = std::vector<sf::Vertex>(4 * m_size.x * m_size.y, sf::Vertex());
     m_tiles = std::vector<sf::Vertex>(4 * m_size.x * m_size.y, sf::Vertex());
+    m_numbers = std::vector<sf::Vertex>(m_tiles.size());
     m_mines = std::vector<sf::Vertex>();
 
     for (int r = 0; r < m_size.y; r++)
         for (int c = 0; c < m_size.x; c++) {
             int idx = 4 * (r * m_size.x + c);
 
-            // affixing position and texture for minefield
+            // affixing position
             if (mines[r][c]) {
                 for (int i = 0; i < 4; i++)
                     m_mines.push_back(sf::Vertex());
@@ -88,9 +101,6 @@ void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)
                                sf::Vector2f(32.f * c, 32.f * r),
                                sf::Vector2f(32, 32),
                                1);
-                util::affixTexture(&m_mines[m_mines.size()-4],
-                                   sf::Vector2f(0, 0),
-                                   sf::Vector2f(32, 32));
             }
 
             // affixing position and texture for numfield

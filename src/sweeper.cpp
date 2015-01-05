@@ -77,9 +77,12 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
         else if (e[i].type == sf::Event::MouseLeft)
             m_leftClicking = m_rightClicking = false;
     }
+
+    if (m_status == 1)
+        mAgent.markWrongTiles();
+
     sf::Vector2<int> mcur = gAgent.getTile(m.x, m.y);
     bool pressingInitLoc = m_leftClicking && m_pressLoc.x == mcur.x && m_pressLoc.y == mcur.y;
-
     gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_leftClicking && m_rightClicking, m_pressLoc);
     gAgent.updateTimer(m_elapsed);
 }

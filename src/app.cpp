@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "gameconfig.hpp"
-#include "gameresourcemanager.hpp"
+#include "gameConfig.hpp"
+#include "gameResourceManager.hpp"
 #include "sweeper.hpp"
 
 sf::RenderWindow window;

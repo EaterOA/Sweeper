@@ -1,7 +1,7 @@
 #include "util.hpp"
-#include "gameconfig.hpp"
-#include "gameresourcemanager.hpp"
-#include "sweepergraphics.hpp"
+#include "gameConfig.hpp"
+#include "gameResourceManager.hpp"
+#include "sweeperGraphics.hpp"
 
 bool SweeperGraphics::init()
 {

@@ -1,5 +1,5 @@
 #include "sweeper.hpp"
-#include "gameconfig.hpp"
+#include "gameConfig.hpp"
 #include "util.hpp"
 #include <iostream>
 

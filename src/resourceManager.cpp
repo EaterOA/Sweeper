@@ -1,4 +1,4 @@
-#include "resourcemanager.hpp"
+#include "resourceManager.hpp"
 #include <assert.h>
 
 bool ResourceManager::loadTexture(const std::string& key, const std::string &path)

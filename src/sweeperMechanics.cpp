@@ -1,5 +1,5 @@
-#include "gameconfig.hpp"
-#include "sweepermechanics.hpp"
+#include "gameConfig.hpp"
+#include "sweeperMechanics.hpp"
 #include "util.hpp"
 
 using namespace std;

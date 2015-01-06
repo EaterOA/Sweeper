@@ -1,8 +1,8 @@
 #ifndef SWEEPER_HPP
 #define SWEEPER_HPP
 
-#include "sweepermechanics.hpp"
-#include "sweepergraphics.hpp"
+#include "sweeperMechanics.hpp"
+#include "sweeperGraphics.hpp"
 
 class Sweeper
 {

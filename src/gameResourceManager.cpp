@@ -1,4 +1,4 @@
-#include "gameresourcemanager.hpp"
+#include "gameResourceManager.hpp"
 #include "util.hpp"
 
 GameResourceManager resource;

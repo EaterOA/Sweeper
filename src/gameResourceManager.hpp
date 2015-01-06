@@ -1,7 +1,7 @@
 #ifndef GAMERESOURCEMANAGER_HPP
 #define GAMERESOURCEMANAGER_HPP
 
-#include "resourcemanager.hpp"
+#include "resourceManager.hpp"
 
 class GameResourceManager: public ResourceManager
 {

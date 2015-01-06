@@ -1,4 +1,4 @@
-#include "gameconfig.hpp"
+#include "gameConfig.hpp"
 #include <cstdlib>
 
 GameConfig config;

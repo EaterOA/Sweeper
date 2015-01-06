@@ -8,6 +8,7 @@ bool GameResourceManager::init()
     // loading necessary textures
     std::map<std::string, std::string> loadList;
     loadList["numbers"] = "img/numbersheet.png";
+    loadList["numbers_outlined"] = "img/numbersheet_outlined.png";
     loadList["mine"] = "img/mine.png";
     loadList["tiles"] = "img/tilesheet.png";
     for (std::map<std::string, std::string>::iterator iter = loadList.begin(); iter != loadList.end(); iter++)

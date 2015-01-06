@@ -20,6 +20,7 @@ private:
     sf::RectangleShape m_background;
     std::vector<sf::Vertex> m_tiles;
     std::vector<sf::Vertex> m_numbers;
+    std::vector<sf::Vertex> m_numbers_outlined;
     std::vector<sf::Vertex> m_mines;
 };
 

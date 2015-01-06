@@ -7,7 +7,6 @@ bool SweeperGraphics::init()
 {
     m_background.setSize(sf::Vector2f(800, 600));
     m_background.setFillColor(sf::Color(210, 210, 210));
-
     return true;
 }
 
@@ -25,21 +24,18 @@ void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool t
                                sf::Vector2f(32, 32));
         }
 
-    // only allow unmarked tiles to be visible (when game is lost)
-    int idx = 0;
-    for (int r = 0; r < m_size.y && idx < (int)m_mines.size(); r++)
-        for (int c = 0; c < m_size.x && idx < (int)m_mines.size(); c++) {
-            if (r*32 == m_mines[idx].position.y &&
-                c*32 == m_mines[idx].position.x) {
-                sf::Vector2f tex(32, 32);
-                if (board[r][c] != 0)
-                    tex *= 0.f;
-                util::affixTexture(&m_mines[idx],
-                                   sf::Vector2f(32.f * board[r][c], 0),
-                                   tex);
-                idx += 4;
-                }
-        }
+    // only allow unmarked mines to be visible (when game is lost)
+    for (int i = 0; i < (int)m_mines.size(); i += 4) {
+        int r = m_mines[i].position.y/32,
+            c = m_mines[i].position.x/32;
+        sf::Color color = sf::Color::Transparent;
+        if (status == 1 && board[r][c] == 0)
+            color = sf::Color::White;
+        util::applyColor(&m_mines[i], color);
+        if (!config.getInt("seethrough_mines"))
+            color = sf::Color::Transparent;
+        util::applyColor(&m_numbers_outlined[i], color);
+    }
 
     // button clicking effects
     if (pressing) {
@@ -72,10 +68,10 @@ void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) co
     target.draw(&m_tiles[0], m_tiles.size(), sf::Quads, states);
     states.texture = &resource.getTexture("numbers");
     target.draw(&m_numbers[0], m_numbers.size(), sf::Quads, states);
-    if (m_status == 1) {
-        states.texture = &resource.getTexture("mine");
-        target.draw(&m_mines[0], m_mines.size(), sf::Quads, states);
-    }
+    states.texture = &resource.getTexture("mine");
+    target.draw(&m_mines[0], m_mines.size(), sf::Quads, states);
+    states.texture = &resource.getTexture("numbers_outlined");
+    target.draw(&m_numbers_outlined[0], m_numbers_outlined.size(), sf::Quads, states);
 }
 
 void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)
@@ -84,12 +80,13 @@ void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)
     m_tiles = std::vector<sf::Vertex>(4 * m_size.x * m_size.y, sf::Vertex());
     m_numbers = std::vector<sf::Vertex>(m_tiles.size());
     m_mines = std::vector<sf::Vertex>();
+    m_numbers_outlined = std::vector<sf::Vertex>();
 
     for (int r = 0; r < m_size.y; r++)
         for (int c = 0; c < m_size.x; c++) {
             int idx = 4 * (r * m_size.x + c);
 
-            // affixing position
+            // affixing position and texture for minefield
             if (mines[r][c]) {
                 for (int i = 0; i < 4; i++)
                     m_mines.push_back(sf::Vertex());
@@ -97,6 +94,9 @@ void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)
                                sf::Vector2f(32.f * c, 32.f * r),
                                sf::Vector2f(32, 32),
                                1);
+                util::affixTexture(&m_mines[m_mines.size()-4],
+                                   sf::Vector2f(0, 0),
+                                   sf::Vector2f(32, 32));
             }
 
             // affixing position and texture for numfield
@@ -109,6 +109,19 @@ void SweeperGraphics::newBoard(sf::Vector2<int> size, bool** mines, int** num)
             util::affixTexture(&m_numbers[idx],
                                sf::Vector2f(tx, ty),
                                sf::Vector2f(32, 32));
+            
+            // affixing position and texture for outlined numfield
+            if (mines[r][c]) {
+                for (int i = 0; i < 4; i++)
+                    m_numbers_outlined.push_back(sf::Vertex());
+                util::affixPos(&m_numbers_outlined[m_numbers_outlined.size()-4],
+                               sf::Vector2f(32.f * c, 32.f * r),
+                               sf::Vector2f(32, 32),
+                               1);
+                util::affixTexture(&m_numbers_outlined[m_numbers_outlined.size()-4],
+                                   sf::Vector2f(tx, ty),
+                                   sf::Vector2f(32, 32));
+            }
 
             // affixing position for board
             util::affixPos(&m_tiles[idx],

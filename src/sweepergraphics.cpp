@@ -1,14 +1,10 @@
 #include "util.hpp"
 #include "gameconfig.hpp"
+#include "gameresourcemanager.hpp"
 #include "sweepergraphics.hpp"
 
 bool SweeperGraphics::init()
 {
-    if (!m_tilesheet.loadFromFile("img/tilesheet.png") ||
-        !m_numbersheet.loadFromFile("img/numbersheet.png") ||
-        !m_minesheet.loadFromFile("img/mine.png"))
-        return false;
-
     m_background.setSize(sf::Vector2f(800, 600));
     m_background.setFillColor(sf::Color(210, 210, 210));
 
@@ -72,12 +68,12 @@ void SweeperGraphics::updateTimer(double elapsed)
 void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(m_background);
-    states.texture = &m_tilesheet;
+    states.texture = &resource.getTexture("tiles");
     target.draw(&m_tiles[0], m_tiles.size(), sf::Quads, states);
-    states.texture = &m_numbersheet;
+    states.texture = &resource.getTexture("numbers");
     target.draw(&m_numbers[0], m_numbers.size(), sf::Quads, states);
     if (m_status == 1) {
-        states.texture = &m_minesheet;
+        states.texture = &resource.getTexture("mine");
         target.draw(&m_mines[0], m_mines.size(), sf::Quads, states);
     }
 }

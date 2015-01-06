@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "gameconfig.hpp"
+#include "gameresourcemanager.hpp"
 #include "sweeper.hpp"
 
 sf::RenderWindow window;
@@ -16,6 +17,7 @@ bool appInit()
     window.setFramerateLimit(30);
 
     if (!config.init()) return false;
+    if (!resource.init()) return false;
     if (!game.init()) return false;
 
     return true;

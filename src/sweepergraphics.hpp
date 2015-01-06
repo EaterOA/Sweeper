@@ -18,9 +18,6 @@ private:
     int m_status;
     sf::Vector2<int> m_size;
     sf::RectangleShape m_background;
-    sf::Texture m_tilesheet;
-    sf::Texture m_numbersheet;
-    sf::Texture m_minesheet;
     std::vector<sf::Vertex> m_tiles;
     std::vector<sf::Vertex> m_numbers;
     std::vector<sf::Vertex> m_mines;

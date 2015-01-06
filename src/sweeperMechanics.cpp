@@ -123,7 +123,7 @@ int** SweeperMechanics::getNumfield()
     return m_numfield;
 }
 
-sf::Vector2<int> SweeperMechanics::getSize()
+sf::Vector2i SweeperMechanics::getSize()
 {
     return m_size;
 }

@@ -22,7 +22,7 @@ void Sweeper::reset()
 
 void Sweeper::processPress(sf::Event &e)
 {
-    sf::Vector2<int> loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
+    sf::Vector2i loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
 
     if (loc.x == -1) {
         m_leftClicking = m_rightClicking = false;
@@ -31,12 +31,12 @@ void Sweeper::processPress(sf::Event &e)
 
     if (e.mouseButton.button == sf::Mouse::Left) {
         m_leftClicking = true;
-        if (m_rightClicking && (m_pressLoc.x != loc.x || m_pressLoc.y != loc.y))
+        if (m_rightClicking && m_pressLoc != loc)
             m_rightClicking = false;
     }
     else if (e.mouseButton.button == sf::Mouse::Right) {
         m_rightClicking = true;
-        if (m_leftClicking && (m_pressLoc.x != loc.x || m_pressLoc.y != loc.y))
+        if (m_leftClicking && m_pressLoc != loc)
             m_leftClicking = false;
     }
     m_pressLoc = loc;
@@ -44,10 +44,10 @@ void Sweeper::processPress(sf::Event &e)
 
 void Sweeper::processRelease(sf::Event &e)
 {
-    sf::Vector2<int> loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
+    sf::Vector2i loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
 
     if (m_leftClicking || m_rightClicking) {
-        if (m_pressLoc.x == loc.x && m_pressLoc.y == loc.y) {
+        if (m_pressLoc == loc) {
             if (m_leftClicking && m_rightClicking)
                 m_status = mAgent.triggerTile(loc.y, loc.x);
             else if (m_leftClicking)
@@ -81,8 +81,8 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
     if (m_status == 1)
         mAgent.markWrongTiles();
 
-    sf::Vector2<int> mcur = gAgent.getTile(m.x, m.y);
-    bool pressingInitLoc = m_leftClicking && m_pressLoc.x == mcur.x && m_pressLoc.y == mcur.y;
+    sf::Vector2i mcur = gAgent.getTile(m.x, m.y);
+    bool pressingInitLoc = m_leftClicking && m_pressLoc == mcur;
     gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_leftClicking && m_rightClicking, m_pressLoc);
     gAgent.updateTimer(m_elapsed);
 }

@@ -22,7 +22,7 @@ private:
 
     bool m_leftClicking;
     bool m_rightClicking;
-    sf::Vector2<int> m_pressLoc;
+    sf::Vector2i m_pressLoc;
 };
 
 #endif

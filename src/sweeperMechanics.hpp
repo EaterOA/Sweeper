@@ -16,7 +16,7 @@ public:
     int triggerTile(int r, int c);
     int flagTile(int r, int c);
     void markWrongTiles();
-    sf::Vector2<int> getSize();
+    sf::Vector2i getSize();
     int** getBoard();
     bool** getMinefield();
     int** getNumfield();
@@ -24,7 +24,7 @@ private:
     bool** generateMinefield(double p, int rows, int cols);
     int** generateNumfield(bool** minefield, int rows, int cols);
 
-    sf::Vector2<int> m_size;
+    sf::Vector2i m_size;
     bool** m_minefield;
     int** m_numfield;
     int** m_board;

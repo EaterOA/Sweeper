@@ -11,4 +11,4 @@ public:
 
 extern GameResourceManager resource;
 
-#endif 
+#endif

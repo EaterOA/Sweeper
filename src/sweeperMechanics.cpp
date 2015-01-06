@@ -130,13 +130,13 @@ sf::Vector2i SweeperMechanics::getSize()
 
 bool** SweeperMechanics::generateMinefield(double p, int rows, int cols)
 {
-    int pn = p * 100000;
+    int pn = p * RAND_MAX;
     bool** minefield = util::alloc2Dbool(rows, cols);
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
-            int r = rand() % 100000;
+            int r = rand();
             minefield[i][j] = r < pn;
             m_free += r >= pn;
         }

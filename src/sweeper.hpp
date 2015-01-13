@@ -9,8 +9,8 @@ class Sweeper
 public:
     bool init();
     void reset();
-    void tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m);
-    void draw(sf::RenderWindow &w) const;
+    void tick(std::vector<sf::Event> &e, const sf::Time &t);
+    void draw() const;
 private:
     void processPress(sf::Event &e);
     void processRelease(sf::Event &e);

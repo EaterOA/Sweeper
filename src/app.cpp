@@ -1,8 +1,8 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
+#include "app.hpp"
+#include "sweeper.hpp"
 #include "gameConfig.hpp"
 #include "gameResourceManager.hpp"
-#include "sweeper.hpp"
 
 sf::RenderWindow window;
 sf::Clock gameClock;
@@ -46,13 +46,12 @@ void appStart()
         // collecting information
         sf::Time elapsed = gameClock.restart();
         std::vector<sf::Event> events = processEvents();
-        sf::Vector2f cursor(sf::Mouse::getPosition(window));
 
         // do awesome stuff
-        game.tick(events, elapsed, cursor);
+        game.tick(events, elapsed);
 
         // display window
-        game.draw(window);
+        game.draw();
         window.display();
     }
 }

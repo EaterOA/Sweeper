@@ -1,7 +1,7 @@
 #include "sweeper.hpp"
+#include "app.hpp"
 #include "gameConfig.hpp"
 #include "util.hpp"
-#include <iostream>
 
 bool Sweeper::init()
 {
@@ -59,7 +59,7 @@ void Sweeper::processRelease(sf::Event &e)
     m_leftClicking = m_rightClicking = false;
 }
 
-void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
+void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t)
 {
     if (m_status != 0)
         return;
@@ -81,13 +81,14 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t, sf::Vector2f m)
     if (m_status == 1)
         mAgent.markWrongTiles();
 
+    sf::Vector2i m = sf::Mouse::getPosition(window);
     sf::Vector2i mcur = gAgent.getTile(m.x, m.y);
     bool pressingInitLoc = m_leftClicking && m_pressLoc == mcur;
     gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_leftClicking && m_rightClicking, m_pressLoc);
     gAgent.updateTimer(m_elapsed);
 }
 
-void Sweeper::draw(sf::RenderWindow &w) const
+void Sweeper::draw() const
 {
-    w.draw(gAgent);
+    window.draw(gAgent);
 }

@@ -18,6 +18,7 @@ void Sweeper::reset()
     m_status = 0;
     mAgent.reset();
     gAgent.newBoard(mAgent.getSize(), mAgent.getMinefield(), mAgent.getNumfield());
+    gAgent.adjustWindow(window);
 }
 
 void Sweeper::processPress(sf::Event &e)

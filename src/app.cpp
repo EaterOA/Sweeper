@@ -13,7 +13,7 @@ bool appInit()
     srand(time(0));
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    window.create(sf::VideoMode(800, 600), "Sweeper", sf::Style::Close, settings);
+    window.create(sf::VideoMode(800, 600), "Sweeper", sf::Style::Close | sf::Style::Resize, settings);
     window.setFramerateLimit(30);
 
     if (!config.init()) return false;
@@ -32,6 +32,10 @@ std::vector<sf::Event> processEvents()
         if (event.type == sf::Event::Closed) {
             window.close();
             break;
+        }
+        else if (event.type == sf::Event::Resized) {
+            sf::View view(sf::FloatRect(0, 0, event.size.width, event.size.height));
+            window.setView(view);
         }
         else inputEvents.push_back(event);
     }

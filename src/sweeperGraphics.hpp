@@ -12,6 +12,7 @@ public:
     void updateTimer(double elapsed);
     void newBoard(sf::Vector2i size, bool** mines, int** num);
     sf::Vector2i getTile(float x, float y);
+    void adjustWindow(sf::RenderWindow &window);
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

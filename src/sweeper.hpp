@@ -1,28 +1,23 @@
 #ifndef SWEEPER_HPP
 #define SWEEPER_HPP
 
-#include "sweeperMechanics.hpp"
-#include "sweeperGraphics.hpp"
+#include <vector>
+#include "guiComponent.hpp"
+#include "sweeperBoard.hpp"
 
-class Sweeper
+class Sweeper : public sf::Drawable, public sf::Transformable
 {
 public:
     bool init();
-    void reset();
     void tick(std::vector<sf::Event> &e, const sf::Time &t);
     void draw() const;
 private:
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void processPress(sf::Event &e);
     void processRelease(sf::Event &e);
 
-    SweeperMechanics mAgent;
-    SweeperGraphics gAgent;
-    int m_status;
-    double m_elapsed;
-
-    bool m_leftClicking;
-    bool m_rightClicking;
-    sf::Vector2i m_pressLoc;
+    std::vector<GUIComponent> m_comps;
+    SweeperBoard* m_board;
 };
 
 #endif

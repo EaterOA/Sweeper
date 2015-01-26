@@ -9,12 +9,14 @@ public:
     GUIComponent() {};
     GUIComponent(sf::Vector2i pos, sf::Vector2i size);
     GUIComponent(sf::IntRect rect);
-    virtual void init() {};
+    virtual bool init() { return true; };
     virtual void processPress(sf::Event &e) {};
     virtual void processRelease(sf::Event &e) {};
     virtual bool inside(sf::Vector2i pt);
     virtual sf::IntRect getRect();
 private:
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {};
+
     sf::IntRect m_rect;
 };
 

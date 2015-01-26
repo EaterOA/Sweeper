@@ -55,7 +55,7 @@ void appStart()
         game.tick(events, elapsed);
 
         // display window
-        game.draw();
+        window.draw(game);
         window.display();
     }
 }

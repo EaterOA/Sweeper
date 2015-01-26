@@ -1,6 +1,7 @@
 # Stuff
 Sweeper
 *.o
+*.P
 
 #################
 ## Eclipse

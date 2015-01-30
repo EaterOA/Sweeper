@@ -11,6 +11,7 @@ public:
     virtual bool init();
     virtual void processPress(sf::Event &e);
     virtual void processRelease(sf::Event &e);
+    sf::Vector2i getSize();
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void reset();

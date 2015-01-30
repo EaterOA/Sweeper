@@ -2,7 +2,6 @@
 #define SWEEPER_HPP
 
 #include <vector>
-#include "guiComponent.hpp"
 #include "sweeperBoard.hpp"
 
 class Sweeper : public sf::Drawable, public sf::Transformable
@@ -15,9 +14,12 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void processPress(sf::Event &e);
     void processRelease(sf::Event &e);
+    void adjustWindow();
 
-    std::vector<GUIComponent> m_comps;
-    SweeperBoard* m_board;
+    sf::Vector2i m_wsize;
+    sf::Vector2i m_space;
+    std::vector<GUIComponent*> m_comps;
+    SweeperBoard m_board;
 };
 
 #endif

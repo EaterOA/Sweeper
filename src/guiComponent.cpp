@@ -1,11 +1,11 @@
 #include "guiComponent.hpp"
 
-GUIComponent::GUIComponent(sf::Vector2i pos, sf::Vector2i size)
+void GUIComponent::setTransform(sf::Vector2i pos, sf::Vector2i size)
 {
     m_rect = sf::IntRect(pos, size);
 }
 
-GUIComponent::GUIComponent(sf::IntRect rect)
+void GUIComponent::setTransform(sf::IntRect rect)
 {
     m_rect = rect;
 }

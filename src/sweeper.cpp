@@ -1,11 +1,30 @@
-#include "sweeper.hpp"
 #include "app.hpp"
-#include "gameConfig.hpp"
-#include "util.hpp"
+#include "sweeper.hpp"
+#include "guiComponent.hpp"
+#include "sweeperBoard.hpp"
 
 bool Sweeper::init()
 {
+    m_space = sf::Vector2i(20, 20);
+
+    m_board.init();
+    m_board.setTransform(m_space, m_board.getSize());
+
+    m_comps.push_back(&m_board);
+
+    m_wsize.x = m_space.x * 2 + m_board.getRect().width;
+    m_wsize.y = m_space.y * 2 + m_board.getRect().height;
+    adjustWindow();
+
     return true;
+}
+
+void Sweeper::adjustWindow()
+{
+    sf::Vector2u wsize(m_wsize.x, m_wsize.y);
+    sf::View view(sf::FloatRect(0, 0, wsize.x, wsize.y));
+    window.setView(view);
+    window.setSize(wsize);
 }
 
 void Sweeper::processPress(sf::Event &e)
@@ -29,4 +48,5 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t)
 
 void Sweeper::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    target.draw(m_board);
 }

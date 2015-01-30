@@ -17,6 +17,7 @@ void SweeperBoard::reset()
     m_status = 0;
     mAgent.reset();
     gAgent.newBoard(mAgent.getSize(), mAgent.getMinefield(), mAgent.getNumfield());
+    gAgent.updateBoard(mAgent.getBoard(), m_status, false, false, m_pressLoc);
 }
 
 void SweeperBoard::processPress(sf::Event &e)
@@ -72,4 +73,9 @@ void SweeperBoard::processRelease(sf::Event &e)
 void SweeperBoard::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(gAgent);
+}
+
+sf::Vector2i SweeperBoard::getSize()
+{
+    return gAgent.getSize();
 }

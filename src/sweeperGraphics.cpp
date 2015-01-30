@@ -57,18 +57,9 @@ void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool t
     }
 }
 
-void SweeperGraphics::adjustWindow(sf::RenderWindow &w)
+sf::Vector2i SweeperGraphics::getSize()
 {
-    sf::Vector2u wsize;
-    wsize.x = 32 * m_size.x;
-    wsize.y = 32 * m_size.y;
-    sf::View view(sf::FloatRect(0, 0, wsize.x, wsize.y));
-    w.setView(view);
-    w.setSize(wsize);
-}
-
-void SweeperGraphics::updateTimer(double elapsed)
-{
+    return 32 * m_size;
 }
 
 void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) const

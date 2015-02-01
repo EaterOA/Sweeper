@@ -6,8 +6,7 @@
 class GUIComponent : public sf::Drawable, public sf::Transformable
 {
 public:
-    void setTransform(sf::Vector2i pos, sf::Vector2i size);
-    void setTransform(sf::IntRect rect);
+    virtual void setTransform(sf::Vector2i pos, sf::Vector2i size);
     virtual bool init() { return true; };
     virtual void processPress(sf::Event &e) {};
     virtual void processRelease(sf::Event &e) {};

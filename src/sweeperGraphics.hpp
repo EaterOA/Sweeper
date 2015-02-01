@@ -8,15 +8,17 @@ class SweeperGraphics : public sf::Drawable, public sf::Transformable
 {
 public:
     bool init();
+    void setOffset(sf::Vector2i pos);
     void updateBoard(int** board, int status, bool pressing, bool triggering, sf::Vector2i loc);
     void newBoard(sf::Vector2i size, bool** mines, int** num);
     sf::Vector2i getTile(float x, float y);
-    sf::Vector2i getSize();
+    sf::Vector2i calculateSize();
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     int m_status;
     sf::Vector2i m_size;
+    sf::Vector2i m_offset;
     sf::RectangleShape m_background;
     std::vector<sf::Vertex> m_tiles;
     std::vector<sf::Vertex> m_numbers;

@@ -12,12 +12,26 @@ bool SweeperBoard::init()
     return true;
 }
 
+void SweeperBoard::setTransform(sf::Vector2i pos, sf::Vector2i size)
+{
+    gAgent.setOffset(pos);
+    GUIComponent::setTransform(pos, size);
+}
+
 void SweeperBoard::reset()
 {
     m_status = 0;
     mAgent.reset();
     gAgent.newBoard(mAgent.getSize(), mAgent.getMinefield(), mAgent.getNumfield());
     gAgent.updateBoard(mAgent.getBoard(), m_status, false, false, m_pressLoc);
+}
+
+void SweeperBoard::updateGraphics()
+{
+    sf::Vector2i m = sf::Mouse::getPosition(window);
+    sf::Vector2i mcur = gAgent.getTile(m.x, m.y);
+    bool pressingInitLoc = m_leftClicking && m_pressLoc == mcur;
+    gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_leftClicking && m_rightClicking, m_pressLoc);
 }
 
 void SweeperBoard::processPress(sf::Event &e)
@@ -40,6 +54,8 @@ void SweeperBoard::processPress(sf::Event &e)
             m_leftClicking = false;
     }
     m_pressLoc = loc;
+
+    updateGraphics();
 }
 
 void SweeperBoard::processRelease(sf::Event &e)
@@ -64,10 +80,7 @@ void SweeperBoard::processRelease(sf::Event &e)
     if (m_status == 1)
         mAgent.markWrongTiles();
 
-    sf::Vector2i m = sf::Mouse::getPosition(window);
-    sf::Vector2i mcur = gAgent.getTile(m.x, m.y);
-    bool pressingInitLoc = m_leftClicking && m_pressLoc == mcur;
-    gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_leftClicking && m_rightClicking, m_pressLoc);
+    updateGraphics();
 }
 
 void SweeperBoard::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -81,5 +94,5 @@ void SweeperBoard::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 sf::Vector2i SweeperBoard::getSize()
 {
-    return gAgent.getSize();
+    return gAgent.calculateSize();
 }

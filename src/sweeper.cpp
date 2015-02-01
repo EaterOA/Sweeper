@@ -33,10 +33,14 @@ void Sweeper::adjustWindow()
 
 void Sweeper::processPress(sf::Event &e)
 {
+    for (int i = 0; i < (int)m_comps.size(); i++)
+        m_comps[i]->processPress(e);
 }
 
 void Sweeper::processRelease(sf::Event &e)
 {
+    for (int i = 0; i < (int)m_comps.size(); i++)
+        m_comps[i]->processRelease(e);
 }
 
 void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t)

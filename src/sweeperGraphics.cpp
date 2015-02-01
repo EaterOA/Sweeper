@@ -64,7 +64,7 @@ sf::Vector2i SweeperGraphics::getSize()
 
 void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(m_background);
+    target.draw(m_background, states);
     states.texture = &resource.getTexture("tiles");
     target.draw(&m_tiles[0], m_tiles.size(), sf::Quads, states);
     states.texture = &resource.getTexture("numbers");
@@ -82,6 +82,7 @@ void SweeperGraphics::newBoard(sf::Vector2i size, bool** mines, int** num)
     m_numbers = std::vector<sf::Vertex>(m_tiles.size());
     m_mines = std::vector<sf::Vertex>();
     m_numbers_outlined = std::vector<sf::Vertex>();
+    m_background.setSize(sf::Vector2f(size.x, size.y));
 
     for (int r = 0; r < m_size.y; r++)
         for (int c = 0; c < m_size.x; c++) {

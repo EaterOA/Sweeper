@@ -5,7 +5,9 @@
 
 bool Sweeper::init()
 {
-    m_space = sf::Vector2i(20, 20);
+    m_background.setFillColor(sf::Color(210, 210, 210));
+
+    sf::Vector2i m_space(20, 20);
 
     m_board.init();
     m_board.setTransform(m_space, m_board.getSize());
@@ -25,6 +27,8 @@ void Sweeper::adjustWindow()
     sf::View view(sf::FloatRect(0, 0, wsize.x, wsize.y));
     window.setView(view);
     window.setSize(wsize);
+
+    m_background.setSize(sf::Vector2f(wsize.x, wsize.y));
 }
 
 void Sweeper::processPress(sf::Event &e)
@@ -48,5 +52,6 @@ void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t)
 
 void Sweeper::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    target.draw(m_background);
     target.draw(m_board);
 }

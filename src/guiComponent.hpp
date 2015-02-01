@@ -12,7 +12,7 @@ public:
     virtual void processPress(sf::Event &e) {};
     virtual void processRelease(sf::Event &e) {};
     virtual bool inside(sf::Vector2i pt);
-    virtual sf::IntRect getRect();
+    virtual sf::IntRect getRect() const;
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {};
 

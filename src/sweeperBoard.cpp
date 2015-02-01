@@ -72,7 +72,11 @@ void SweeperBoard::processRelease(sf::Event &e)
 
 void SweeperBoard::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(gAgent);
+    sf::Transform t;
+    sf::IntRect r = getRect();
+    t.translate(r.left, r.top);
+    sf::RenderStates newState(t);
+    target.draw(gAgent, newState);
 }
 
 sf::Vector2i SweeperBoard::getSize()

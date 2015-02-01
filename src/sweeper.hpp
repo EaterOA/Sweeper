@@ -17,7 +17,7 @@ private:
     void adjustWindow();
 
     sf::Vector2i m_wsize;
-    sf::Vector2i m_space;
+    sf::RectangleShape m_background;
     std::vector<GUIComponent*> m_comps;
     SweeperBoard m_board;
 };

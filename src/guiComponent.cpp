@@ -15,7 +15,7 @@ bool GUIComponent::inside(sf::Vector2i pt)
     return m_rect.contains(pt);
 }
 
-sf::IntRect GUIComponent::getRect()
+sf::IntRect GUIComponent::getRect() const
 {
     return m_rect;
 }

@@ -37,10 +37,10 @@ int SweeperMechanics::openTile(int r, int c)
         }
         else
         {
+            m_board[r][c] = 2;
             m_opened++;
             if(m_opened == m_free)
                 return 2;
-            m_board[r][c] = 2;
         }
     }
 

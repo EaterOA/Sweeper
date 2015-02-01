@@ -142,7 +142,8 @@ sf::Vector2i SweeperGraphics::getTile(float x, float y)
 {
     sf::Vector2i tile((x-m_offset.x)/32, (y-m_offset.y)/32);
     sf::Vector2i noTile(-1, -1);
-    if (tile.x >= m_size.x || tile.y >= m_size.y)
+    if (tile.x >= m_size.x || tile.y >= m_size.y ||
+            x < m_offset.x || y < m_offset.y)
         return noTile;
     return tile;
 }

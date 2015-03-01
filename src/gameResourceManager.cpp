@@ -11,6 +11,7 @@ bool GameResourceManager::init()
     loadList["numbers_outlined"] = "img/numbersheet_outlined.png";
     loadList["mine"] = "img/mine.png";
     loadList["tiles"] = "img/tilesheet.png";
+    loadList["reload"] = "img/reload.png";
     for (std::map<std::string, std::string>::iterator iter = loadList.begin(); iter != loadList.end(); iter++)
         if (!loadTexture(iter->first, iter->second))
             return false;

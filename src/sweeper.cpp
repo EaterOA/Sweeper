@@ -1,7 +1,6 @@
 #include "app.hpp"
 #include "sweeper.hpp"
 #include "guiComponent.hpp"
-#include "sweeperBoard.hpp"
 
 bool Sweeper::init()
 {
@@ -11,10 +10,15 @@ bool Sweeper::init()
 
     m_board.init();
     m_board.setTransform(m_space, m_board.getSize());
+    m_reload.init();
+    m_reload.setTransform(sf::Vector2i(m_space.x * 2 + m_board.getSize().x,
+                                       m_space.y),
+                          sf::Vector2i(50, 50));
 
     m_comps.push_back(&m_board);
+    m_comps.push_back(&m_reload);
 
-    m_wsize.x = m_space.x * 2 + m_board.getRect().width;
+    m_wsize.x = m_space.x * 3 + m_board.getRect().width + 50;
     m_wsize.y = m_space.y * 2 + m_board.getRect().height;
     adjustWindow();
 
@@ -58,4 +62,5 @@ void Sweeper::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(m_background);
     target.draw(m_board);
+    target.draw(m_reload);
 }

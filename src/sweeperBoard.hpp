@@ -8,15 +8,15 @@
 class SweeperBoard : public GUIComponent
 {
 public:
-    virtual bool init();
+    virtual bool init(Sweeper* game, std::string name = "");
     virtual void setTransform(sf::Vector2i pos, sf::Vector2i size);
     virtual void processPress(sf::Event &e);
     virtual void processRelease(sf::Event &e);
     sf::Vector2i getSize();
+    void reset();
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void updateGraphics();
-    void reset();
 
     SweeperMechanics mAgent;
     SweeperGraphics gAgent;

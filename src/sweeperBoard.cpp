@@ -3,8 +3,9 @@
 #include "gameConfig.hpp"
 #include "util.hpp"
 
-bool SweeperBoard::init()
+bool SweeperBoard::init(Sweeper* game, std::string name)
 {
+    GUIComponent::init(game, "SweeperBoard");
     if (!mAgent.init()) return false;
     if (!gAgent.init()) return false;
     reset();

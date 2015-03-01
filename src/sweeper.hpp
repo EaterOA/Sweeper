@@ -10,6 +10,7 @@ class Sweeper : public sf::Drawable, public sf::Transformable
 public:
     bool init();
     void tick(std::vector<sf::Event> &e, const sf::Time &t);
+    std::vector<GUIComponent*> components();
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void processPress(sf::Event &e);

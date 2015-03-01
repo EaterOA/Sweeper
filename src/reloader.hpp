@@ -6,7 +6,7 @@
 class Reloader: public GUIComponent
 {
 public:
-    virtual bool init();
+    virtual bool init(Sweeper* game, std::string name = "");
     virtual void setTransform(sf::Vector2i pos, sf::Vector2i size);
     virtual void processPress(sf::Event &e);
     virtual void processRelease(sf::Event &e);

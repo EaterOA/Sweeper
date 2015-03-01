@@ -1,8 +1,10 @@
 #include "reloader.hpp"
 #include "gameResourceManager.hpp"
+#include "sweeperBoard.hpp"
 
-bool Reloader::init()
+bool Reloader::init(Sweeper* game, std::string name)
 {
+    GUIComponent::init(game, "Reloader");
     m_button.setTexture(&resource.getTexture("reload"));
     m_clicking = false;
 

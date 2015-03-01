@@ -8,9 +8,9 @@ bool Sweeper::init()
 
     sf::Vector2i m_space(20, 20);
 
-    m_board.init();
+    m_board.init(this);
     m_board.setTransform(m_space, m_board.getSize());
-    m_reload.init();
+    m_reload.init(this);
     m_reload.setTransform(sf::Vector2i(m_space.x * 2 + m_board.getSize().x,
                                        m_space.y),
                           sf::Vector2i(50, 50));
@@ -63,4 +63,9 @@ void Sweeper::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(m_background);
     target.draw(m_board);
     target.draw(m_reload);
+}
+
+std::vector<GUIComponent*> Sweeper::components()
+{
+    return m_comps;
 }

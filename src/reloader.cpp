@@ -31,6 +31,8 @@ void Reloader::processRelease(sf::Event &e)
 
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
     if (m_button.getGlobalBounds().contains(pt)) {
+        SweeperBoard* board = (SweeperBoard*)findComponent("SweeperBoard");
+        board->reset();
     }
 }
 

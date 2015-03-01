@@ -37,6 +37,9 @@ void SweeperBoard::updateGraphics()
 
 void SweeperBoard::processPress(sf::Event &e)
 {
+    if (m_status != 0)
+        return;
+
     sf::Vector2i loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
 
     if (loc.x == -1) {

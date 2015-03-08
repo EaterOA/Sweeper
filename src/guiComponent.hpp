@@ -11,6 +11,7 @@ class GUIComponent : public sf::Drawable, public sf::Transformable
 public:
     virtual void setTransform(sf::Vector2i pos, sf::Vector2i size);
     virtual bool init(Sweeper* game, std::string name = "");
+    virtual void tick(const sf::Time &t) {};
     virtual void processPress(sf::Event &e) {};
     virtual void processRelease(sf::Event &e) {};
     virtual bool inside(sf::Vector2i pt);

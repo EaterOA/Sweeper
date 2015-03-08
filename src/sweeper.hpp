@@ -13,8 +13,6 @@ public:
     std::vector<GUIComponent*> components();
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    void processPress(sf::Event &e);
-    void processRelease(sf::Event &e);
     void adjustWindow();
 
     sf::Vector2i m_wsize;

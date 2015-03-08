@@ -35,27 +35,26 @@ void Sweeper::adjustWindow()
     m_background.setSize(sf::Vector2f(wsize.x, wsize.y));
 }
 
-void Sweeper::processPress(sf::Event &e)
-{
-    for (int i = 0; i < (int)m_comps.size(); i++)
-        m_comps[i]->processPress(e);
-}
-
-void Sweeper::processRelease(sf::Event &e)
-{
-    for (int i = 0; i < (int)m_comps.size(); i++)
-        m_comps[i]->processRelease(e);
-}
-
 void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t)
 {
     // process events
-    for (int i = 0; i < (int)e.size(); i++) {
-        if (e[i].type == sf::Event::MouseButtonPressed)
-            processPress(e[i]);
-        else if (e[i].type == sf::Event::MouseButtonReleased)
-            processRelease(e[i]);
+    for (int n = 0; n < (int)e.size(); n++) {
+        sf::Event& ev = e[n];
+
+        // process press
+        if (ev.type == sf::Event::MouseButtonPressed)
+            for (int i = 0; i < (int)m_comps.size(); i++)
+                m_comps[i]->processPress(ev);
+
+        // process release
+        else if (ev.type == sf::Event::MouseButtonReleased)
+            for (int i = 0; i < (int)m_comps.size(); i++)
+                m_comps[i]->processRelease(ev);
     }
+
+    // tick components
+    for (int i = 0; i < (int)m_comps.size(); i++)
+        m_comps[i]->tick(t);
 }
 
 void Sweeper::draw(sf::RenderTarget& target, sf::RenderStates states) const

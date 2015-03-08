@@ -1,25 +1,25 @@
 #include "app.hpp"
 #include "sweeper.hpp"
 #include "guiComponent.hpp"
+#include "util.hpp"
 
 bool Sweeper::init()
 {
     m_background.setFillColor(sf::Color(210, 210, 210));
 
-    sf::Vector2i m_space(20, 20);
+    sf::Vector2f m_space(20, 20);
 
     m_board.init(this);
-    m_board.setTransform(m_space, m_board.getSize());
+    m_board.setPosition(m_space);
     m_reload.init(this);
-    m_reload.setTransform(sf::Vector2i(m_space.x * 2 + m_board.getSize().x,
-                                       m_space.y),
-                          sf::Vector2i(50, 50));
+    m_reload.setPosition(sf::Vector2f(m_space.x * 2 + m_board.getSize().x, m_space.y));
+    m_reload.setSize(sf::Vector2f(50, 50));
 
     m_comps.push_back(&m_board);
     m_comps.push_back(&m_reload);
 
-    m_wsize.x = m_space.x * 3 + m_board.getRect().width + 50;
-    m_wsize.y = m_space.y * 2 + m_board.getRect().height;
+    m_wsize.x = m_space.x * 3 + m_board.getSize().x + 50;
+    m_wsize.y = m_space.y * 2 + m_board.getSize().y;
     adjustWindow();
 
     return true;
@@ -27,12 +27,12 @@ bool Sweeper::init()
 
 void Sweeper::adjustWindow()
 {
-    sf::Vector2u wsize(m_wsize.x, m_wsize.y);
+    sf::Vector2u wsize = util::conv<unsigned>(m_wsize);
     sf::View view(sf::FloatRect(0, 0, wsize.x, wsize.y));
     window.setView(view);
     window.setSize(wsize);
 
-    m_background.setSize(sf::Vector2f(wsize.x, wsize.y));
+    m_background.setSize(util::conv<float>(wsize));
 }
 
 void Sweeper::tick(std::vector<sf::Event> &e, const sf::Time &t)

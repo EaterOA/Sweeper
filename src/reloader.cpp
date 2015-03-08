@@ -2,6 +2,7 @@
 #include "gameResourceManager.hpp"
 #include "sweeperBoard.hpp"
 #include "app.hpp"
+#include "util.hpp"
 
 bool Reloader::init(Sweeper* game, std::string name)
 {
@@ -13,17 +14,22 @@ bool Reloader::init(Sweeper* game, std::string name)
     return true;
 }
 
-void Reloader::setTransform(sf::Vector2i pos, sf::Vector2i size)
+void Reloader::setPosition(sf::Vector2f pos)
 {
-    m_button.setPosition(sf::Vector2f(pos.x, pos.y));
-    m_button.setSize(sf::Vector2f(size.x, size.y));
+    GUIComponent::setPosition(pos);
+    m_button.setPosition(pos);
+}
+
+void Reloader::setSize(sf::Vector2f size)
+{
+    GUIComponent::setSize(size);
+    m_button.setSize(size);
 }
 
 void Reloader::tick(const sf::Time &t)
 {
-    sf::Vector2i mpos = sf::Mouse::getPosition(window);
-    sf::Vector2f mposf(mpos.x, mpos.y);
-    m_depressed = m_clicking && m_button.getGlobalBounds().contains(mposf);
+    sf::Vector2f mpos = util::conv<float>(sf::Mouse::getPosition(window));
+    m_depressed = m_clicking && contains(mpos);
 }
 
 void Reloader::processPress(sf::Event &e)
@@ -32,7 +38,7 @@ void Reloader::processPress(sf::Event &e)
         return;
 
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
-    m_clicking = m_button.getGlobalBounds().contains(pt);
+    m_clicking = contains(pt);
 }
 
 void Reloader::processRelease(sf::Event &e)
@@ -45,7 +51,7 @@ void Reloader::processRelease(sf::Event &e)
     m_clicking = false;
 
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
-    if (m_button.getGlobalBounds().contains(pt)) {
+    if (contains(pt)) {
         SweeperBoard* board = (SweeperBoard*)findComponent("SweeperBoard");
         board->reset();
     }

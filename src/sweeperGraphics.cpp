@@ -57,14 +57,9 @@ void SweeperGraphics::updateBoard(int** board, int status, bool pressing, bool t
     }
 }
 
-sf::Vector2i SweeperGraphics::calculateSize()
+sf::Vector2f SweeperGraphics::calculateSizeInPixels()
 {
-    return 32 * m_size;
-}
-
-void SweeperGraphics::setOffset(sf::Vector2i pos)
-{
-    m_offset = pos;
+    return 32.f * sf::Vector2f(m_size.x, m_size.y);
 }
 
 void SweeperGraphics::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -140,10 +135,10 @@ void SweeperGraphics::newBoard(sf::Vector2i size, bool** mines, int** num)
 
 sf::Vector2i SweeperGraphics::getTile(float x, float y)
 {
-    sf::Vector2i tile((x-m_offset.x)/32, (y-m_offset.y)/32);
+    sf::Vector2i tile(x/32, y/32);
     sf::Vector2i noTile(-1, -1);
     if (tile.x >= m_size.x || tile.y >= m_size.y ||
-            x < m_offset.x || y < m_offset.y)
+            x < 0 || y < 0)
         return noTile;
     return tile;
 }

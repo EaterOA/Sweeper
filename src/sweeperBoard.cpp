@@ -13,26 +13,26 @@ bool SweeperBoard::init(Sweeper* game, std::string name)
     return true;
 }
 
-void SweeperBoard::setTransform(sf::Vector2i pos, sf::Vector2i size)
-{
-    gAgent.setOffset(pos);
-    GUIComponent::setTransform(pos, size);
-}
-
 void SweeperBoard::reset()
 {
     m_status = 0;
     mAgent.reset();
     gAgent.newBoard(mAgent.getSize(), mAgent.getMinefield(), mAgent.getNumfield());
     gAgent.updateBoard(mAgent.getBoard(), m_status, false, false, m_pressLoc);
+    setSize(gAgent.calculateSizeInPixels());
 }
 
 void SweeperBoard::updateGraphics()
 {
-    sf::Vector2i m = sf::Mouse::getPosition(window);
+    sf::Vector2f m = util::conv<float>(sf::Mouse::getPosition(window)) - getPosition();
     sf::Vector2i mcur = gAgent.getTile(m.x, m.y);
-    bool pressingInitLoc = m_leftClicking && m_pressLoc == mcur;
-    gAgent.updateBoard(mAgent.getBoard(), m_status, pressingInitLoc, m_leftClicking && m_rightClicking, m_pressLoc);
+    gAgent.updateBoard(
+        mAgent.getBoard(),
+        m_status,
+        m_leftClicking && m_pressLoc == mcur,
+        m_leftClicking && m_rightClicking,
+        m_pressLoc
+    );
 }
 
 void SweeperBoard::processPress(sf::Event &e)
@@ -40,7 +40,9 @@ void SweeperBoard::processPress(sf::Event &e)
     if (m_status != 0)
         return;
 
-    sf::Vector2i loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
+    sf::Vector2f mPos(e.mouseButton.x, e.mouseButton.y);
+    sf::Vector2f mLocal = mPos - getPosition();
+    sf::Vector2i loc = gAgent.getTile(mLocal.x, mLocal.y);
 
     if (loc.x == -1) {
         m_leftClicking = m_rightClicking = false;
@@ -67,7 +69,9 @@ void SweeperBoard::processRelease(sf::Event &e)
     if (m_status != 0)
         return;
 
-    sf::Vector2i loc = gAgent.getTile(e.mouseButton.x, e.mouseButton.y);
+    sf::Vector2f mPos(e.mouseButton.x, e.mouseButton.y);
+    sf::Vector2f mLocal = mPos - getPosition();
+    sf::Vector2i loc = gAgent.getTile(mLocal.x, mLocal.y);
 
     if (m_leftClicking || m_rightClicking) {
         if (m_pressLoc == loc) {
@@ -90,13 +94,8 @@ void SweeperBoard::processRelease(sf::Event &e)
 void SweeperBoard::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     sf::Transform t;
-    sf::IntRect r = getRect();
-    t.translate(r.left, r.top);
+    sf::Vector2f pos = getPosition();
+    t.translate(pos.x, pos.y);
     sf::RenderStates newState(t);
     target.draw(gAgent, newState);
-}
-
-sf::Vector2i SweeperBoard::getSize()
-{
-    return gAgent.calculateSize();
 }

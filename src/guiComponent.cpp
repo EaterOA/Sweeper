@@ -8,17 +8,34 @@ bool GUIComponent::init(Sweeper* game, std::string name)
     return true;
 }
 
-void GUIComponent::setTransform(sf::Vector2i pos, sf::Vector2i size)
+void GUIComponent::setSize(sf::Vector2f size)
 {
-    m_rect = sf::IntRect(pos, size);
+    m_rect.width = size.x;
+    m_rect.height = size.y;
 }
 
-bool GUIComponent::inside(sf::Vector2i pt)
+void GUIComponent::setPosition(sf::Vector2f pos)
+{
+    m_rect.left = pos.x;
+    m_rect.top = pos.y;
+}
+
+sf::Vector2f GUIComponent::getSize() const
+{
+    return sf::Vector2f(m_rect.width, m_rect.height);
+}
+
+sf::Vector2f GUIComponent::getPosition() const
+{
+    return sf::Vector2f(m_rect.left, m_rect.top);
+}
+
+bool GUIComponent::contains(sf::Vector2f pt)
 {
     return m_rect.contains(pt);
 }
 
-sf::IntRect GUIComponent::getRect() const
+sf::FloatRect GUIComponent::getRect() const
 {
     return m_rect;
 }

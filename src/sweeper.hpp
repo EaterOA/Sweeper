@@ -2,8 +2,7 @@
 #define SWEEPER_HPP
 
 #include <vector>
-#include "sweeperBoard.hpp"
-#include "reloader.hpp"
+#include "guiComponent.hpp"
 
 class Sweeper : public sf::Drawable, public sf::Transformable
 {
@@ -16,10 +15,7 @@ private:
     void adjustWindow();
 
     sf::Vector2i m_wsize;
-    sf::RectangleShape m_background;
     std::vector<GUIComponent*> m_comps;
-    SweeperBoard m_board;
-    Reloader m_reload;
 };
 
 #endif

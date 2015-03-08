@@ -55,6 +55,7 @@ void appStart()
         game.tick(events, elapsed);
 
         // display window
+        window.clear(sf::Color(210, 210, 210));
         window.draw(game);
         window.display();
     }

@@ -75,6 +75,13 @@ namespace util
     int** alloc2Dint(unsigned rows, unsigned cols);
     bool** alloc2Dbool(unsigned rows, unsigned cols);
     void free2D(void* arr);
+
+    // SFML utils
+    template <typename To, typename From>
+    sf::Vector2<To> conv(sf::Vector2<From> src) {
+        return sf::Vector2<To>(src.x, src.y);
+    }
+
 }
 
 #endif

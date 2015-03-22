@@ -11,7 +11,8 @@ class Config
 public:
     bool load(const std::string& path, const std::map<std::string, std::string>& defaultValues = std::map<std::string, std::string>());
     bool load(const std::vector<std::string>& paths, const std::map<std::string, std::string>& defaultValues = std::map<std::string, std::string>());
-    bool load(const std::map<std::string, std::string>& db);
+    bool load(const std::map<std::string, std::string>& db, bool overwrite = true);
+    bool save(const std::string& path);
     std::string getStr(const std::string& key);
     std::string getStr(const std::string& key, const std::string &defaultValue);
     void setStr(const std::string& key, const std::string &value);

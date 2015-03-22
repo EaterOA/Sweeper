@@ -17,40 +17,46 @@ void Config::parse(std::istream& in)
     }
 }
 
-bool Config::load(const std::string& path, const std::map<std::string, std::string>& defaultValues /*= std::map<std::string, std::string>()*/)
+bool Config::load(const std::string& path, const std::map<std::string, std::string>& defaultValues)
 {
     std::fstream fin(path.c_str());
     if (fin.bad()) return false;
     parse(fin);
-    for (std::map<std::string, std::string>::const_iterator iter = defaultValues.begin(); iter != defaultValues.end(); iter++) {
-        if (db_str.find(iter->first) == db_str.end()) {
+    load(defaultValues, false);
+    return true;
+}
+
+bool Config::load(const std::vector<std::string>& paths, const std::map<std::string, std::string>& defaultValues)
+{
+    bool flag = false;
+    for (unsigned i = 0; i < paths.size(); i++) {
+        if (!load(paths[i]))
+            continue;
+        flag = true;
+    }
+    load(defaultValues, false);
+    return flag;
+}
+
+bool Config::load(const std::map<std::string, std::string>& db, bool overwrite)
+{
+    for (std::map<std::string, std::string>::const_iterator iter = db.begin(); iter != db.end(); iter++) {
+        if (overwrite || db_str.find(iter->first) == db_str.end())
             db_str[iter->first] = iter->second;
-        }
     }
     return true;
 }
 
-bool Config::load(const std::vector<std::string>& paths, const std::map<std::string, std::string>& defaultValues /*= std::map<std::string, std::string>()*/)
+bool Config::save(const std::string& path)
 {
-    bool flag = false;
-    for (unsigned i = 0; i < paths.size(); i++) {
-        std::fstream fin(paths[i].c_str());
-        if (fin.bad()) continue;
-        flag = true;
-        parse(fin);
+    std::ofstream fout(path.c_str());
+    if (fout.bad()) return false;
+    for (std::map<std::string, std::string>::iterator iter = db_str.begin(); iter != db_str.end(); iter++) {
+        fout << iter->first << " = " << iter->second << "\n";
     }
-    for (std::map<std::string, std::string>::const_iterator iter = defaultValues.begin(); iter != defaultValues.end(); iter++) {
-        if (db_str.find(iter->first) == db_str.end()) {
-            db_str[iter->first] = iter->second;
-        }
-    }
-    return flag;
-}
-
-bool Config::load(const std::map<std::string, std::string>& db)
-{
-    for (std::map<std::string, std::string>::const_iterator iter = db.begin(); iter != db.end(); iter++) {
-        db_str[iter->first] = iter->second;
+    for (std::map<std::string, int>::iterator iter = db_int.begin(); iter != db_int.end(); iter++) {
+        if (db_str.find(iter->first) == db_str.end())
+            fout << iter->first << " = " << iter->second << "\n";
     }
     return true;
 }

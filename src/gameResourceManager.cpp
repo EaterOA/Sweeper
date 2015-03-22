@@ -22,6 +22,7 @@ bool GameResourceManager::init()
 
     // loading necessary fonts
     loadList = std::map<std::string, std::string>();
+    loadList["opensans"] = "fonts/OpenSans-Regular.ttf";
     for (std::map<std::string, std::string>::iterator iter = loadList.begin(); iter != loadList.end(); iter++)
         if (!loadFont(iter->first, iter->second))
             return false;

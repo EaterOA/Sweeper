@@ -16,10 +16,8 @@ public:
     int getValue() const;
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    void adjustValue();
-    void adjustInfo();
-    void adjustComponents(sf::Vector2f pos, sf::Vector2f size);
-    void adjustSwitchPos(sf::Vector2f pos, sf::Vector2f size);
+    void updateInfo();
+    void adjustComponents();
 
     int m_value;
     int m_min, m_max;

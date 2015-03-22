@@ -83,6 +83,15 @@ namespace util
         return sf::Vector2<To>(src.x, src.y);
     }
 
+    // General utils
+    template <typename T>
+    T bound(T value, T min, T max) {
+        if (value < min)
+            value = min;
+        else if (value > max)
+            value = max;
+        return value;
+    }
 }
 
 #endif

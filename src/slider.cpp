@@ -12,6 +12,7 @@ bool Slider::init(Sweeper* game, std::string name)
     m_switch.setOutlineThickness(1);
     m_info.setFont(resource.getFont("opensans"));
     m_info.setColor(sf::Color(0, 0, 0));
+    m_info.setCharacterSize(15);
 
     return true;
 }
@@ -19,13 +20,13 @@ bool Slider::init(Sweeper* game, std::string name)
 void Slider::setPosition(sf::Vector2f pos)
 {
     GUIComponent::setPosition(pos);
-    adjustComponents(pos, getSize());
+    adjustComponents();
 }
 
 void Slider::setSize(sf::Vector2f size)
 {
     GUIComponent::setSize(size);
-    adjustComponents(getPosition(), size);
+    adjustComponents();
 }
 
 int Slider::getValue() const
@@ -33,35 +34,21 @@ int Slider::getValue() const
     return m_value;
 }
 
-void Slider::adjustValue()
+void Slider::adjustComponents()
 {
-    if (m_value < m_min)
-        m_value = m_min;
-    if (m_value > m_max)
-        m_value = m_max;
-}
-
-void Slider::adjustComponents(sf::Vector2f pos, sf::Vector2f size)
-{
+    sf::Vector2f size = getSize(), pos = getPosition();
     m_info.setPosition(pos.x, pos.y);
-    m_info.setCharacterSize(15);
-    adjustSwitchPos(pos, size);
     int ioffset = m_info.getLocalBounds().height + 10;
     pos.y += ioffset;
     size.y -= ioffset;
     m_ditch.setPosition(sf::Vector2f(pos.x, pos.y + 0.2f * size.y));
     m_ditch.setSize(sf::Vector2f(size.x, 0.6f * size.y));
     m_switch.setSize(sf::Vector2f(size.x * 0.05f, size.y));
-}
-
-void Slider::adjustSwitchPos(sf::Vector2f pos, sf::Vector2f size)
-{
-    int ioffset = m_info.getLocalBounds().height + 10;
     float progress = (m_value - m_min) / (float)(m_max - m_min);
-    m_switch.setPosition(sf::Vector2f(pos.x + progress * 0.93f * size.x + 0.01f * size.x, pos.y + ioffset));
+    m_switch.setPosition(sf::Vector2f(pos.x + progress * 0.93f * size.x + 0.01f * size.x, pos.y));
 }
 
-void Slider::adjustInfo()
+void Slider::updateInfo()
 {
     std::stringstream ss;
     ss << getName() << ": " << getValue();
@@ -76,9 +63,9 @@ void Slider::tick(const sf::Time &t)
         mx -= m_ditch.getPosition().x;
         float progress = mx / (0.95f * m_ditch.getSize().x);
         m_value = progress * (m_max - m_min + 0.5f) + m_min;
-        adjustValue();
-        adjustInfo();
-        adjustSwitchPos(getPosition(), getSize());
+        m_value = util::bound(m_value, m_min, m_max);
+        updateInfo();
+        adjustComponents();
     }
 }
 
@@ -104,9 +91,9 @@ void Slider::setBounds(int minimum, int maximum)
 {
     m_min = minimum;
     m_max = maximum;
-    adjustValue();
-    adjustInfo();
-    adjustSwitchPos(getPosition(), getSize());
+    m_value = util::bound(m_value, m_min, m_max);
+    updateInfo();
+    adjustComponents();
 }
 
 void Slider::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -14,6 +14,7 @@ public:
     virtual void setSize(sf::Vector2f size);
     void setBounds(int minimum, int maximum);
     int getValue() const;
+    void setValue(int value);
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void updateInfo();

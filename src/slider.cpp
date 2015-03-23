@@ -35,6 +35,13 @@ int Slider::getValue() const
     return m_value;
 }
 
+void Slider::setValue(int value)
+{
+    m_value = util::bound(value, m_min, m_max);
+    updateInfo();
+    adjustComponents();
+}
+
 void Slider::adjustComponents()
 {
     sf::Vector2f size = getSize(), pos = getPosition();

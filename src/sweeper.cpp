@@ -4,6 +4,7 @@
 #include "sweeperBoard.hpp"
 #include "reloader.hpp"
 #include "slider.hpp"
+#include "timer.hpp"
 #include "gameConfig.hpp"
 
 bool Sweeper::init()
@@ -33,12 +34,18 @@ bool Sweeper::init()
     c->setBounds(8, 30);
     c->setSize(sf::Vector2f(100, 40));
     c->setValue(config.getInt("board_width"));
+    // Timer
+    Timer* t = new Timer();
+    t->init(this, "Timer");
+    t->setSize(sf::Vector2f(100, 30));
+    t->start();
 
     m_comps.push_back(board);
     m_comps.push_back(reload);
     m_comps.push_back(mf);
     m_comps.push_back(r);
     m_comps.push_back(c);
+    m_comps.push_back(t);
 
     adjustWindow();
 
@@ -65,6 +72,9 @@ void Sweeper::adjustWindow()
                 break;
             case 4:
                 m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y * 3.2 + m_comps[1]->getSize().y + m_comps[2]->getSize().y + m_comps[3]->getSize().y));
+                break;
+            case 5:
+                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y + m_comps[0]->getSize().y - m_comps[5]->getSize().y));
                 break;
             default:
                 break;

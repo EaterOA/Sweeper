@@ -4,6 +4,7 @@
 #include "sweeperBoard.hpp"
 #include "reloader.hpp"
 #include "slider.hpp"
+#include "gameConfig.hpp"
 
 bool Sweeper::init()
 {
@@ -24,18 +25,21 @@ bool Sweeper::init()
     mf->setBounds(20, 90);
     mf->setPosition(sf::Vector2f(m_space.x * 2 + board->getSize().x, m_space.y * 2 + reload->getSize().y));
     mf->setSize(sf::Vector2f(140, 40));
+    mf->setValue(config.getInt("mine_perc"));
     // Rows slider
     Slider* r = new Slider();
     r->init(this, "Rows");
     r->setBounds(8, 30);
     r->setPosition(sf::Vector2f(m_space.x * 2 + board->getSize().x, m_space.y * 3 + reload->getSize().y + mf->getSize().y));
     r->setSize(sf::Vector2f(100, 40));
+    r->setValue(config.getInt("board_height"));
     // Columns slider
     Slider* c = new Slider();
     c->init(this, "Columns");
     c->setBounds(8, 30);
     c->setPosition(sf::Vector2f(m_space.x * 2 + board->getSize().x, m_space.y * 3.2 + reload->getSize().y + +mf->getSize().y + r->getSize().y));
     c->setSize(sf::Vector2f(100, 40));
+    c->setValue(config.getInt("board_width"));
 
     m_comps.push_back(board);
     m_comps.push_back(reload);
@@ -43,8 +47,6 @@ bool Sweeper::init()
     m_comps.push_back(r);
     m_comps.push_back(c);
 
-    m_wsize.x = m_space.x * 3 + board->getSize().x + mf->getSize().x;
-    m_wsize.y = m_space.y * 2 + board->getSize().y;
     adjustWindow();
 
     return true;
@@ -52,6 +54,33 @@ bool Sweeper::init()
 
 void Sweeper::adjustWindow()
 {
+    sf::Vector2f m_space(20, 20);
+    int right = 0, bottom = 0;
+    for (int i = 0; i < (int)m_comps.size(); i++) {
+        switch (i) {
+            case 1:
+                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y));
+                break;
+            case 2:
+                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y * 2 + m_comps[1]->getSize().y));
+                break;
+            case 3:
+                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y * 3 + m_comps[1]->getSize().y + m_comps[2]->getSize().y));
+                break;
+            case 4:
+                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y * 3.2 + m_comps[1]->getSize().y + m_comps[2]->getSize().y + m_comps[3]->getSize().y));
+                break;
+            default:
+                break;
+        }
+        int compRight = m_comps[i]->getPosition().x + m_comps[i]->getSize().x;
+        int compBottom = m_comps[i]->getPosition().y + m_comps[i]->getSize().y;
+        right = MAX(right, compRight);
+        bottom = MAX(bottom, compBottom);
+    }
+    m_wsize.x = m_space.x + right;
+    m_wsize.y = m_space.y + bottom;
+
     sf::Vector2u wsize = util::conv<unsigned>(m_wsize);
     sf::View view(sf::FloatRect(0, 0, wsize.x, wsize.y));
     window.setView(view);

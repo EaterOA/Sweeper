@@ -1,8 +1,11 @@
 #include "reloader.hpp"
 #include "gameResourceManager.hpp"
+#include "gameConfig.hpp"
 #include "sweeperBoard.hpp"
+#include "slider.hpp"
 #include "app.hpp"
 #include "util.hpp"
+#include "sweeper.hpp"
 
 bool Reloader::init(Sweeper* game, std::string name)
 {
@@ -53,7 +56,15 @@ void Reloader::processRelease(sf::Event &e)
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
     if (contains(pt)) {
         SweeperBoard* board = (SweeperBoard*)findComponent("SweeperBoard");
+        int mine_perc = ((Slider*)findComponent("Mine frequency"))->getValue();
+        int board_height = ((Slider*)findComponent("Rows"))->getValue();
+        int board_width = ((Slider*)findComponent("Columns"))->getValue();
+        config.setInt("mine_perc", mine_perc);
+        config.setInt("board_height", board_height);
+        config.setInt("board_width", board_width);
+        config.save("config/config.txt");
         board->reset();
+        getGame()->adjustWindow();
     }
 }
 

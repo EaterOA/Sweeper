@@ -10,9 +10,9 @@ public:
     bool init();
     void tick(std::vector<sf::Event> &e, const sf::Time &t);
     std::vector<GUIComponent*> components();
+    void adjustWindow();
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    void adjustWindow();
 
     sf::Vector2i m_wsize;
     std::vector<GUIComponent*> m_comps;

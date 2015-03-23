@@ -8,36 +8,29 @@
 
 bool Sweeper::init()
 {
-    sf::Vector2f m_space(20, 20);
-
     // Board
     SweeperBoard* board = new SweeperBoard();
     board->init(this);
-    board->setPosition(m_space);
     // Reload button
     Reloader* reload = new Reloader();
     reload->init(this);
-    reload->setPosition(sf::Vector2f(m_space.x * 2 + board->getSize().x, m_space.y));
     reload->setSize(sf::Vector2f(50, 50));
     // Mine frequency slider
     Slider* mf = new Slider();
     mf->init(this, "Mine frequency");
     mf->setBounds(20, 90);
-    mf->setPosition(sf::Vector2f(m_space.x * 2 + board->getSize().x, m_space.y * 2 + reload->getSize().y));
     mf->setSize(sf::Vector2f(140, 40));
     mf->setValue(config.getInt("mine_perc"));
     // Rows slider
     Slider* r = new Slider();
     r->init(this, "Rows");
     r->setBounds(8, 30);
-    r->setPosition(sf::Vector2f(m_space.x * 2 + board->getSize().x, m_space.y * 3 + reload->getSize().y + mf->getSize().y));
     r->setSize(sf::Vector2f(100, 40));
     r->setValue(config.getInt("board_height"));
     // Columns slider
     Slider* c = new Slider();
     c->init(this, "Columns");
     c->setBounds(8, 30);
-    c->setPosition(sf::Vector2f(m_space.x * 2 + board->getSize().x, m_space.y * 3.2 + reload->getSize().y + +mf->getSize().y + r->getSize().y));
     c->setSize(sf::Vector2f(100, 40));
     c->setValue(config.getInt("board_width"));
 
@@ -58,6 +51,9 @@ void Sweeper::adjustWindow()
     int right = 0, bottom = 0;
     for (int i = 0; i < (int)m_comps.size(); i++) {
         switch (i) {
+            case 0:
+                m_comps[i]->setPosition(m_space);
+                break;
             case 1:
                 m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y));
                 break;

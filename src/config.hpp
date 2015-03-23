@@ -11,7 +11,7 @@ class Config
 public:
     bool load(const std::string& path, const std::map<std::string, std::string>& defaultValues = std::map<std::string, std::string>());
     bool load(const std::vector<std::string>& paths, const std::map<std::string, std::string>& defaultValues = std::map<std::string, std::string>());
-    bool load(const std::map<std::string, std::string>& db, bool overwrite = true);
+    bool load(const std::map<std::string, std::string>& data, bool overwrite = true);
     bool save(const std::string& path);
     std::string getStr(const std::string& key);
     std::string getStr(const std::string& key, const std::string &defaultValue);
@@ -22,8 +22,7 @@ public:
 private:
     void parse(std::istream& in);
 
-    std::map<std::string, int> db_int;
-    std::map<std::string, std::string> db_str;
+    std::map<std::string, std::string> db;
 };
 
 #endif

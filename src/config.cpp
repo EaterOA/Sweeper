@@ -1,27 +1,23 @@
 #include <assert.h>
 #include <fstream>
-#include <sstream>
 #include "config.hpp"
 #include "util.hpp"
 
-void Config::parse(std::istream& in)
+bool Config::load(const std::string& path, const std::map<std::string, std::string>& defaultValues)
 {
+    std::ifstream fin(path.c_str());
+    if (fin.bad()) return false;
+
     std::string line;
-    while (getline(in, line)) {
+    while (getline(fin, line)) {
         std::size_t idx = line.find("=");
         if (idx != std::string::npos) {
             std::string key = util::trim(line.substr(0, idx));
             std::string value = util::trim(line.substr(idx+1));
-            db_str[key] = value;
+            db[key] = value;
         }
     }
-}
 
-bool Config::load(const std::string& path, const std::map<std::string, std::string>& defaultValues)
-{
-    std::fstream fin(path.c_str());
-    if (fin.bad()) return false;
-    parse(fin);
     load(defaultValues, false);
     return true;
 }
@@ -38,11 +34,11 @@ bool Config::load(const std::vector<std::string>& paths, const std::map<std::str
     return flag;
 }
 
-bool Config::load(const std::map<std::string, std::string>& db, bool overwrite)
+bool Config::load(const std::map<std::string, std::string>& data, bool overwrite)
 {
-    for (std::map<std::string, std::string>::const_iterator iter = db.begin(); iter != db.end(); iter++) {
-        if (overwrite || db_str.find(iter->first) == db_str.end())
-            db_str[iter->first] = iter->second;
+    for (std::map<std::string, std::string>::const_iterator iter = data.begin(); iter != data.end(); iter++) {
+        if (overwrite || db.find(iter->first) == db.end())
+            db[iter->first] = iter->second;
     }
     return true;
 }
@@ -51,69 +47,44 @@ bool Config::save(const std::string& path)
 {
     std::ofstream fout(path.c_str());
     if (fout.bad()) return false;
-    for (std::map<std::string, std::string>::iterator iter = db_str.begin(); iter != db_str.end(); iter++) {
+    for (std::map<std::string, std::string>::iterator iter = db.begin(); iter != db.end(); iter++) {
         fout << iter->first << " = " << iter->second << "\n";
-    }
-    for (std::map<std::string, int>::iterator iter = db_int.begin(); iter != db_int.end(); iter++) {
-        if (db_str.find(iter->first) == db_str.end())
-            fout << iter->first << " = " << iter->second << "\n";
     }
     return true;
 }
 
 std::string Config::getStr(const std::string& key)
 {
-    std::map<std::string, std::string>::iterator iter = db_str.find(key);
-    assert(iter != db_str.end());
+    std::map<std::string, std::string>::iterator iter = db.find(key);
+    assert(iter != db.end());
     return iter->second;
 }
 
 std::string Config::getStr(const std::string& key, const std::string& defaultValue)
 {
-    std::map<std::string, std::string>::iterator iter = db_str.find(key);
-    return iter != db_str.end() ? iter->second : defaultValue;
+    std::map<std::string, std::string>::iterator iter = db.find(key);
+    return iter != db.end() ? iter->second : defaultValue;
 }
 
 void Config::setStr(const std::string& key, const std::string& value)
 {
-    db_str[key] = value;
+    db[key] = value;
 }
 
 int Config::getInt(const std::string& key)
 {
-    std::map<std::string, std::string>::iterator iter1 = db_str.find(key);
-    if (iter1 != db_str.end()) {
-        int val;
-        std::stringstream ss(iter1->second);
-        ss >> val;
-        assert(!ss.bad());
-        db_int[key] = val;
-        db_str.erase(iter1);
-    }
-    std::map<std::string, int>::const_iterator iter2 = db_int.find(key);
-    assert(iter2 != db_int.end());
-    return iter2->second;
+    std::map<std::string, std::string>::iterator iter = db.find(key);
+    assert(iter != db.end());
+    return util::atoi(iter->second);
 }
-
 
 int Config::getInt(const std::string& key, int defaultValue)
 {
-    std::map<std::string, std::string>::iterator iter1 = db_str.find(key);
-    if (iter1 != db_str.end()) {
-        int val;
-        std::stringstream ss(iter1->second);
-        ss >> val;
-        assert(!ss.bad());
-        db_int[key] = val;
-        db_str.erase(iter1);
-    }
-    std::map<std::string, int>::iterator iter2 = db_int.find(key);
-    return (iter2 != db_int.end() ? iter2->second : defaultValue);
+    std::map<std::string, std::string>::iterator iter = db.find(key);
+    return iter != db.end() ? util::atoi(iter->second) : defaultValue;
 }
 
 void Config::setInt(const std::string& key, int value)
 {
-    std::map<std::string, std::string>::iterator iter = db_str.find(key);
-    if (iter != db_str.end()) db_str.erase(iter);
-    db_int[key] = value;
+    db[key] = util::itoa(value);
 }

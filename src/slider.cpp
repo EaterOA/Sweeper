@@ -2,6 +2,7 @@
 #include "app.hpp"
 #include "gameResourceManager.hpp"
 #include "util.hpp"
+#include <sstream>
 
 bool Slider::init(Sweeper* game, std::string name)
 {

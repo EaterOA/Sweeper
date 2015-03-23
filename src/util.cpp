@@ -8,13 +8,6 @@
 
 namespace util
 {
-
-    int rand(int min, int max)
-    {
-        int range = max - min + 1;
-        return std::rand() % range + min;
-    }
-
     float toDir(float vx, float vy)
     {
         return atan(vy / vx) + (vx < 0 ? PI : 0);
@@ -488,5 +481,53 @@ namespace util
     void free2D(void* arr)
     {
         free(arr);
+    }
+
+    int rand(int min, int max)
+    {
+        return ((unsigned)std::rand() << 16 | std::rand()) % (max - min + 1) + min;
+    }
+
+    int atoi(const std::string &s)
+    {
+        int val = 0;
+        int size = s.size();
+        int i = 0;
+        bool neg = s[0] == '-';
+        if (neg)
+            i++;
+        while (i < size) {
+            val = val * 10 + s[i] - '0';
+            i++;
+        }
+        return neg ? -val : val;
+    }
+
+    std::string itoa(int val)
+    {
+        if (val == 0)
+            return "0";
+        const int MAXLEN = 11;
+        std::string s(MAXLEN, 0);
+        int count = 0;
+        bool neg = val < 0;
+        if (neg)
+            val = -val;
+        while (val) {
+            s[count] = val % 10 + '0';
+            count++;
+            val /= 10;
+        }
+        if (neg) {
+            s[count] = '-';
+            count++;
+        }
+        s.resize(count);
+        for (int i = 0; i < count/2; i++) {
+            char tmp = s[i];
+            s[i] = s[count-i-1];
+            s[count-i-1] = tmp;
+        }
+        return s;
     }
 }

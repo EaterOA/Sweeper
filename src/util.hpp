@@ -3,11 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <sstream>
 
 #define MIN(a,b) (a < b ? a : b)
 #define MAX(a,b) (a > b ? a : b)
-#define RAND(min,max) (rand() % (max - min + 1) + min)
 
 namespace util
 {
@@ -92,6 +90,9 @@ namespace util
             value = max;
         return value;
     }
+    int rand(int min, int max);
+    int atoi(const std::string& s);
+    std::string itoa(int val);
 }
 
 #endif

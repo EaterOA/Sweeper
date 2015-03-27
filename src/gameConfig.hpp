@@ -7,9 +7,12 @@ class GameConfig: public Config
 {
 public:
     bool init();
-    void reload();
+    bool reload();
+    bool save();
 private:
     void constrainInts();
+
+    std::string m_path;
 };
 
 extern GameConfig config;

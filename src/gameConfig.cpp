@@ -5,22 +5,26 @@ GameConfig config;
 
 bool GameConfig::init()
 {
+    m_path = "config/config.txt";
+
     //Defaults for configuration not in config file
     std::map<std::string, std::string> defaults;
     defaults["board_width"] = "16";
     defaults["board_height"] = "16";
     defaults["mine_perc"] = "15";
     defaults["seethrough_mines"] = "0";
-    load("config/config.txt", defaults);
+    load(m_path, defaults);
     constrainInts();
 
     return true;
 }
 
-void GameConfig::reload()
+bool GameConfig::reload()
 {
-    load("config/config.txt");
+    if (!load(m_path))
+        return false;
     constrainInts();
+    return true;
 }
 
 void GameConfig::constrainInts()
@@ -42,4 +46,9 @@ void GameConfig::constrainInts()
         else if (value > right)
             setInt(constraints[i][0], right);
     }
+}
+
+bool GameConfig::save()
+{
+    return Config::save(m_path);
 }

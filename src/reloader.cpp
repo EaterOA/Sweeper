@@ -62,7 +62,7 @@ void Reloader::processRelease(sf::Event &e)
         config.setInt("mine_perc", mine_perc);
         config.setInt("board_height", board_height);
         config.setInt("board_width", board_width);
-        config.save("config/config.txt");
+        config.save();
         board->reset();
         getGame()->adjustWindow();
     }

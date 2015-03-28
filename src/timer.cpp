@@ -8,6 +8,11 @@ bool Timer::init(Sweeper* game, std::string name)
     m_info.setFont(resource.getFont("opensans"));
     m_info.setColor(sf::Color(0, 0, 0));
     m_info.setCharacterSize(25);
+    m_info.setString("00:00");
+    setSize(sf::Vector2f(m_info.getLocalBounds().width,
+                         m_info.getCharacterSize() * 1.2f)); // hack due to
+                                                             // height not
+                                                             // computed right
 
     m_elapsed = 0;
     m_counting = false;
@@ -46,7 +51,7 @@ void Timer::tick(const sf::Time &t)
     if (m_counting) {
         int before = (int)m_elapsed;
         m_elapsed += t.asSeconds();
-        if (before == (int)m_elapsed && before != 0)
+        if (before == (int)m_elapsed)
             return;
         int minutes = (int)m_elapsed / 60;
         int seconds = (int)m_elapsed % 60;

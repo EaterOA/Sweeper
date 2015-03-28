@@ -37,7 +37,6 @@ bool Sweeper::init()
     // Timer
     Timer* t = new Timer();
     t->init(this, "Timer");
-    t->setSize(sf::Vector2f(100, 30));
     t->start();
 
     m_comps.push_back(board);
@@ -57,28 +56,21 @@ void Sweeper::adjustWindow()
     sf::Vector2f m_space(20, 20);
     int right = 0, bottom = 0;
     for (int i = 0; i < (int)m_comps.size(); i++) {
-        switch (i) {
-            case 0:
-                m_comps[i]->setPosition(m_space);
-                break;
-            case 1:
-                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y));
-                break;
-            case 2:
-                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y * 2 + m_comps[1]->getSize().y));
-                break;
-            case 3:
-                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y * 3 + m_comps[1]->getSize().y + m_comps[2]->getSize().y));
-                break;
-            case 4:
-                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y * 3.2 + m_comps[1]->getSize().y + m_comps[2]->getSize().y + m_comps[3]->getSize().y));
-                break;
-            case 5:
-                m_comps[i]->setPosition(sf::Vector2f(m_space.x * 2 + m_comps[0]->getSize().x, m_space.y + m_comps[0]->getSize().y - m_comps[5]->getSize().y));
-                break;
-            default:
-                break;
-        }
+        if (i == 0)
+            m_comps[i]->setPosition(m_space);
+        else if (i == 1)
+            m_comps[i]->setPosition(m_space + sf::Vector2f(m_comps[0]->getOpposite().x, 0));
+        else if (i == 2)
+            m_comps[i]->setPosition(m_space + sf::Vector2f(m_comps[0]->getOpposite().x, m_comps[i-1]->getOpposite().y));
+        else if (i == 3)
+            m_comps[i]->setPosition(m_space + sf::Vector2f(m_comps[0]->getOpposite().x, m_comps[i-1]->getOpposite().y));
+        else if (i == 4)
+            m_comps[i]->setPosition(m_space + sf::Vector2f(m_comps[0]->getOpposite().x, m_comps[i-1]->getOpposite().y - 15));
+        else if (i == 5)
+            m_comps[i]->setPosition(m_space + sf::Vector2f(m_comps[0]->getOpposite().x, m_comps[i-1]->getOpposite().y));
+        else if (i == 6)
+            m_comps[i]->setPosition(m_comps[0]->getOpposite() + sf::Vector2f(m_space.x, -m_comps[i]->getSize().y));
+
         int compRight = m_comps[i]->getPosition().x + m_comps[i]->getSize().x;
         int compBottom = m_comps[i]->getPosition().y + m_comps[i]->getSize().y;
         right = MAX(right, compRight);

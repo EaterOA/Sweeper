@@ -19,6 +19,7 @@ public:
     virtual sf::Vector2f getPosition() const;
     virtual sf::Vector2f getSize() const;
     virtual sf::FloatRect getRect() const;
+    virtual sf::Vector2f getOpposite() const;
     std::string getName() const;
     Sweeper* getGame() const;
     GUIComponent* findComponent(std::string name);

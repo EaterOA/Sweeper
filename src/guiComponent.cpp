@@ -40,6 +40,11 @@ sf::FloatRect GUIComponent::getRect() const
     return m_rect;
 }
 
+sf::Vector2f GUIComponent::getOpposite() const
+{
+    return getPosition() + getSize();
+}
+
 std::string GUIComponent::getName() const
 {
     return m_name;

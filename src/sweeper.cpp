@@ -27,13 +27,13 @@ bool Sweeper::init()
     Slider* r = new Slider();
     r->init(this, "Rows");
     r->bindSetting("board_height");
-    r->setBounds(8, 30);
+    r->setBounds(10, 30);
     r->setSize(sf::Vector2f(100, 40));
     // Columns slider
     Slider* c = new Slider();
     c->init(this, "Columns");
     c->bindSetting("board_width");
-    c->setBounds(8, 30);
+    c->setBounds(10, 30);
     c->setSize(sf::Vector2f(100, 40));
     // Seethrough mines checkbox
     Checkbox* sm = new Checkbox();
@@ -75,7 +75,7 @@ void Sweeper::adjustWindow()
         else if (i == 5)
             m_comps[i]->setPosition(m_space + sf::Vector2f(m_comps[0]->getOpposite().x, m_comps[i-1]->getOpposite().y));
         else if (i == 6)
-            m_comps[i]->setPosition(m_comps[0]->getOpposite() + sf::Vector2f(m_space.x, -m_comps[i]->getSize().y));
+            m_comps[i]->setPosition(sf::Vector2f(right, bottom) - m_comps[i]->getSize());
 
         int compRight = m_comps[i]->getPosition().x + m_comps[i]->getSize().x;
         int compBottom = m_comps[i]->getPosition().y + m_comps[i]->getSize().y;

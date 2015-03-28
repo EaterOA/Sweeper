@@ -8,7 +8,6 @@ class Checkbox: public GUIComponent
 public:
     virtual bool init(Sweeper* game, std::string name = "");
     virtual void processPress(sf::Event &e);
-    virtual void processRelease(sf::Event &e);
     virtual void setPosition(sf::Vector2f pos);
     void bindSetting(std::string setting);
     bool isChecked() const;

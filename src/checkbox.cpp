@@ -32,23 +32,9 @@ void Checkbox::processPress(sf::Event &e)
         return;
 
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
-    m_clicking = contains(pt);
-}
 
-void Checkbox::processRelease(sf::Event &e)
-{
-    if (e.mouseButton.button != sf::Mouse::Left)
-        return;
-    if (!m_clicking)
-        return;
-
-    m_clicking = false;
-    sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
-
-    if (contains(pt)) {
+    if (contains(pt))
         setCheck(!isChecked());
-    }
-
 }
 
 bool Checkbox::isChecked() const

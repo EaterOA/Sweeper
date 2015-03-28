@@ -12,6 +12,8 @@ bool GameResourceManager::init()
     loadList["mine"] = "img/mine.png";
     loadList["tiles"] = "img/tilesheet.png";
     loadList["reload"] = "img/reload.png";
+    loadList["checkbox_unchecked"] = "img/checkbox_unchecked.png";
+    loadList["checkbox_checked"] = "img/checkbox_checked.png";
     for (std::map<std::string, std::string>::iterator iter = loadList.begin(); iter != loadList.end(); iter++)
         if (!loadTexture(iter->first, iter->second))
             return false;

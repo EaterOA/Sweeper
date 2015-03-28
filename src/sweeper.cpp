@@ -4,6 +4,7 @@
 #include "sweeperBoard.hpp"
 #include "reloader.hpp"
 #include "slider.hpp"
+#include "checkbox.hpp"
 #include "timer.hpp"
 #include "gameConfig.hpp"
 
@@ -44,6 +45,7 @@ bool Sweeper::init()
     m_comps.push_back(mf);
     m_comps.push_back(r);
     m_comps.push_back(c);
+    m_comps.push_back(sm);
     m_comps.push_back(t);
 
     adjustWindow();

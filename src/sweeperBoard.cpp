@@ -2,6 +2,7 @@
 #include "app.hpp"
 #include "gameConfig.hpp"
 #include "util.hpp"
+#include "timer.hpp"
 
 bool SweeperBoard::init(Sweeper* game, std::string name)
 {
@@ -84,7 +85,22 @@ void SweeperBoard::processRelease(sf::Event &e)
     m_leftClicking = m_rightClicking = false;
 
     if (m_status == 1)
-        mAgent.markWrongTiles();
+        lose();
+    else if (m_status == 2)
+        win();
+}
+
+void SweeperBoard::win()
+{
+    Timer* timer = (Timer*)findComponent("Timer");
+    timer->stop();
+}
+
+void SweeperBoard::lose()
+{
+    mAgent.markWrongTiles();
+    Timer* timer = (Timer*)findComponent("Timer");
+    timer->stop();
 }
 
 void SweeperBoard::tick(const sf::Time &t)

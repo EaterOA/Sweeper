@@ -2,10 +2,10 @@
 #include "gameResourceManager.hpp"
 #include "gameConfig.hpp"
 #include "sweeperBoard.hpp"
-#include "slider.hpp"
 #include "app.hpp"
 #include "util.hpp"
 #include "sweeper.hpp"
+#include "timer.hpp"
 
 bool Reloader::init(Sweeper* game, std::string name)
 {
@@ -56,9 +56,12 @@ void Reloader::processRelease(sf::Event &e)
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
     if (contains(pt)) {
         SweeperBoard* board = (SweeperBoard*)findComponent("SweeperBoard");
-        config.save();
+        Timer* timer = (Timer*)findComponent("Timer");
         board->reset();
+        timer->reset();
+        timer->start();
         getGame()->adjustWindow();
+        config.save();
     }
 }
 

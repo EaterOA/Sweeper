@@ -44,6 +44,7 @@ void Timer::stop()
 void Timer::reset()
 {
     m_elapsed = 0;
+    m_info.setString("00:00");
 }
 
 void Timer::tick(const sf::Time &t)

@@ -16,6 +16,8 @@ public:
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void updateGraphics();
+    void win();
+    void lose();
 
     SweeperMechanics mAgent;
     SweeperGraphics gAgent;

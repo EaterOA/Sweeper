@@ -5,7 +5,7 @@ GameConfig config;
 
 bool GameConfig::init()
 {
-    m_path = "config/config.txt";
+    m_path = "config.txt";
 
     //Defaults for configuration not in config file
     std::map<std::string, std::string> defaults;

@@ -1,4 +1,0 @@
-board_width = 10
-board_height = 16
-mine_perc = 40
-seethrough_mines = 1

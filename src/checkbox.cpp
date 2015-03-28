@@ -7,7 +7,6 @@ bool Checkbox::init(Sweeper* game, std::string name)
 {
     GUIComponent::init(game, name);
     m_clicking = false;
-    m_check = false;
     m_box.setTexture(&resource.getTexture("checkbox_unchecked"));
     m_box.setSize(sf::Vector2f(17, 17));
     m_info.setFont(resource.getFont("opensans"));
@@ -47,21 +46,26 @@ void Checkbox::processRelease(sf::Event &e)
 
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
     if (m_box.getGlobalBounds().contains(pt)) {
-        setCheck(!m_check);
+        setCheck(!isChecked());
     }
 }
 
 bool Checkbox::isChecked() const
 {
-    return m_check;
+    return (bool)config.getInt(m_setting);
 }
 
 void Checkbox::setCheck(bool check)
 {
-    m_check = check;
+    config.setInt(m_setting, check);
     m_box.setTexture(&resource.getTexture(
-        m_check ? "checkbox_checked" : "checkbox_unchecked"
+        check ? "checkbox_checked" : "checkbox_unchecked"
     ));
+}
+
+void Checkbox::bindSetting(std::string setting)
+{
+    m_setting = setting;
 }
 
 void Checkbox::draw(sf::RenderTarget& target, sf::RenderStates states) const

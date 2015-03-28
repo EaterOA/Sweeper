@@ -2,6 +2,7 @@
 #include "app.hpp"
 #include "gameResourceManager.hpp"
 #include "util.hpp"
+#include "gameConfig.hpp"
 #include <sstream>
 
 bool Slider::init(Sweeper* game, std::string name)
@@ -18,6 +19,11 @@ bool Slider::init(Sweeper* game, std::string name)
     return true;
 }
 
+void Slider::bindSetting(std::string setting)
+{
+    m_setting = setting;
+}
+
 void Slider::setPosition(sf::Vector2f pos)
 {
     GUIComponent::setPosition(pos);
@@ -32,18 +38,20 @@ void Slider::setSize(sf::Vector2f size)
 
 int Slider::getValue() const
 {
-    return m_value;
+    return config.getInt(m_setting);
 }
 
 void Slider::setValue(int value)
 {
-    m_value = util::bound(value, m_min, m_max);
+    config.setInt(m_setting, value);
     updateInfo();
     adjustComponents();
 }
 
 void Slider::adjustComponents()
 {
+    int value = getValue();
+
     sf::Vector2f size = getSize(), pos = getPosition();
     m_info.setPosition(pos.x, pos.y);
     int ioffset = m_info.getLocalBounds().height + 10;
@@ -52,7 +60,7 @@ void Slider::adjustComponents()
     m_ditch.setPosition(sf::Vector2f(pos.x, pos.y + 0.2f * size.y));
     m_ditch.setSize(sf::Vector2f(size.x, 0.6f * size.y));
     m_switch.setSize(sf::Vector2f(size.x * 0.05f, size.y));
-    float progress = (m_value - m_min) / (float)(m_max - m_min);
+    float progress = (value - m_min) / (float)(m_max - m_min);
     m_switch.setPosition(sf::Vector2f(pos.x + progress * 0.93f * size.x + 0.01f * size.x, pos.y));
 }
 
@@ -70,10 +78,9 @@ void Slider::tick(const sf::Time &t)
         mx -= m_switch.getSize().x * 0.5f;
         mx -= m_ditch.getPosition().x;
         float progress = mx / (0.95f * m_ditch.getSize().x);
-        m_value = progress * (m_max - m_min + 0.5f) + m_min;
-        m_value = util::bound(m_value, m_min, m_max);
-        updateInfo();
-        adjustComponents();
+        int value = progress * (m_max - m_min + 0.5f) + m_min;
+        value = util::bound(value, m_min, m_max);
+        setValue(value);
     }
 }
 
@@ -99,9 +106,7 @@ void Slider::setBounds(int minimum, int maximum)
 {
     m_min = minimum;
     m_max = maximum;
-    m_value = util::bound(m_value, m_min, m_max);
-    updateInfo();
-    adjustComponents();
+    setValue(util::bound(getValue(), m_min, m_max));
 }
 
 void Slider::draw(sf::RenderTarget& target, sf::RenderStates states) const

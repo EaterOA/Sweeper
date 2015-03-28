@@ -60,8 +60,6 @@ void SweeperBoard::processPress(sf::Event &e)
             m_leftClicking = false;
     }
     m_pressLoc = loc;
-
-    updateGraphics();
 }
 
 void SweeperBoard::processRelease(sf::Event &e)
@@ -87,7 +85,10 @@ void SweeperBoard::processRelease(sf::Event &e)
 
     if (m_status == 1)
         mAgent.markWrongTiles();
+}
 
+void SweeperBoard::tick(const sf::Time &t)
+{
     updateGraphics();
 }
 

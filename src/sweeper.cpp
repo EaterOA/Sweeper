@@ -20,21 +20,25 @@ bool Sweeper::init()
     // Mine frequency slider
     Slider* mf = new Slider();
     mf->init(this, "Mine frequency");
+    mf->bindSetting("mine_perc");
     mf->setBounds(20, 90);
     mf->setSize(sf::Vector2f(140, 40));
-    mf->setValue(config.getInt("mine_perc"));
     // Rows slider
     Slider* r = new Slider();
     r->init(this, "Rows");
+    r->bindSetting("board_height");
     r->setBounds(8, 30);
     r->setSize(sf::Vector2f(100, 40));
-    r->setValue(config.getInt("board_height"));
     // Columns slider
     Slider* c = new Slider();
     c->init(this, "Columns");
+    c->bindSetting("board_width");
     c->setBounds(8, 30);
     c->setSize(sf::Vector2f(100, 40));
-    c->setValue(config.getInt("board_width"));
+    // Seethrough mines checkbox
+    Checkbox* sm = new Checkbox();
+    sm->init(this, "Seethrough mines");
+    sm->bindSetting("seethrough_mines");
     // Timer
     Timer* t = new Timer();
     t->init(this, "Timer");

@@ -11,6 +11,7 @@ public:
     virtual bool init(Sweeper* game, std::string name = "");
     virtual void processPress(sf::Event &e);
     virtual void processRelease(sf::Event &e);
+    virtual void tick(const sf::Time &t);
     void reset();
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -12,6 +12,7 @@ public:
     virtual void processRelease(sf::Event &e);
     virtual void setPosition(sf::Vector2f pos);
     virtual void setSize(sf::Vector2f size);
+    void bindSetting(std::string setting);
     void setBounds(int minimum, int maximum);
     int getValue() const;
     void setValue(int value);
@@ -20,7 +21,7 @@ private:
     void updateInfo();
     void adjustComponents();
 
-    int m_value;
+    std::string m_setting;
     int m_min, m_max;
     sf::Text m_info;
     sf::RectangleShape m_ditch;

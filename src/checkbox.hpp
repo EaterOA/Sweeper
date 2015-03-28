@@ -10,6 +10,7 @@ public:
     virtual void processPress(sf::Event &e);
     virtual void processRelease(sf::Event &e);
     virtual void setPosition(sf::Vector2f pos);
+    void bindSetting(std::string setting);
     bool isChecked() const;
     void setCheck(bool check);
 private:
@@ -17,7 +18,7 @@ private:
     void updateInfo();
     void adjustComponents();
 
-    bool m_check;
+    std::string m_setting;
     sf::Text m_info;
     sf::RectangleShape m_box;
     bool m_clicking;

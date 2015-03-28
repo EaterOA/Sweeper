@@ -14,7 +14,7 @@ bool Checkbox::init(Sweeper* game, std::string name)
     m_info.setCharacterSize(15);
     m_info.setString(name);
     setSize(sf::Vector2f(m_box.getSize().x + m_info.getLocalBounds().width + 5,
-            MAX(m_box.getSize().y, m_info.getLocalBounds().height)));
+            MAX(m_box.getSize().y, m_info.getCharacterSize() * 1.2f)));
 
     return true;
 }
@@ -32,7 +32,7 @@ void Checkbox::processPress(sf::Event &e)
         return;
 
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
-    m_clicking = m_box.getGlobalBounds().contains(pt);
+    m_clicking = contains(pt);
 }
 
 void Checkbox::processRelease(sf::Event &e)
@@ -43,11 +43,12 @@ void Checkbox::processRelease(sf::Event &e)
         return;
 
     m_clicking = false;
-
     sf::Vector2f pt(e.mouseButton.x, e.mouseButton.y);
-    if (m_box.getGlobalBounds().contains(pt)) {
+
+    if (contains(pt)) {
         setCheck(!isChecked());
     }
+
 }
 
 bool Checkbox::isChecked() const
